@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rise of Christianity Quiz</title>
+  <style>
+    body { font-family: Arial; background:#f4f4f4; text-align:center; }
+    .quiz-box {
+      background:white; padding:20px; margin:50px auto;
+      width:60%; border-radius:10px; box-shadow:0 0 10px gray;
+    }
+    button {
+      padding:10px 15px; margin:5px;
+      border:none; background:#3498db; color:white;
+      border-radius:5px; cursor:pointer;
+    }
+    button:hover { background:#2980b9; }
+  </style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+  <h2>Rise of Christianity Quiz</h2>
+  <p id="question"></p>
+  <div id="options"></div>
+  <button onclick="nextQuestion()">Next</button>
+  <h3 id="score"></h3>
+</div>
+
+<audio id="correctSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="wrongSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+<script>
+
+let quiz = [
+{q:"Who established himself as the undisputed emperor of Rome?", o:["Augustus","Constantine","Nero","Julius Caesar"], a:1},
+{q:"Constantine shifted the capital to?", o:["Athens","Sparta","Constantinople","Alexandria"], a:2},
+{q:"Constantinople was earlier known as?", o:["Byzantium","Rome","Jerusalem","Nazareth"], a:0},
+{q:"Christianity became official religion in which century?", o:["2nd","3rd","4th","5th"], a:2},
+{q:"Who was considered the spiritual head of Christians?", o:["King","Pope","Prophet","Priest"], a:1},
+{q:"Jesus opposed which principle?", o:["Equality","Justice","Eye for eye","Charity"], a:2},
+{q:"Jesus emphasized love for?", o:["Only friends","Only family","All including enemies","Only rich"], a:2},
+{q:"Jesus was crucified by?", o:["Greeks","Romans","Egyptians","Persians"], a:1},
+{q:"Roman governor involved in Jesus’ trial?", o:["Herod","Pontius Pilate","Augustus","Nero"], a:1},
+{q:"Jesus was considered as?", o:["King","Prophet","Messiah","Warrior"], a:2},
+
+{q:"Jesus’ teachings are recorded in?", o:["Vedas","Gospels","Quran","Tripitaka"], a:1},
+{q:"Who spread Christianity actively in Palestine?", o:["Paul","Peter","John","Luke"], a:1},
+{q:"Who later spread Christianity widely?", o:["Peter","Paul","Mark","Luke"], a:1},
+{q:"Christians were initially?", o:["Powerful","Majority","Minority","Rulers"], a:2},
+{q:"Christians were persecuted by?", o:["Greeks","Romans","Persians","Egyptians"], a:1},
+{q:"In which year Christianity became legal?", o:["200 CE","313 CE","400 CE","500 CE"], a:1},
+{q:"Constantine defeated?", o:["Nero","Maxentius","Augustus","Herod"], a:1},
+{q:"Jesus was born in?", o:["Rome","Bethlehem","Nazareth","Jerusalem"], a:1},
+{q:"Jesus grew up in?", o:["Bethlehem","Nazareth","Rome","Alexandria"], a:1},
+{q:"Jesus studied?", o:["Greek texts","Roman laws","Jewish scriptures","Egyptian texts"], a:2},
+
+{q:"John the Baptist was Jesus’?", o:["Brother","Cousin","Friend","Teacher"], a:1},
+{q:"John baptized Jesus in?", o:["Sea","River","Lake","Temple"], a:1},
+{q:"Holy Spirit appeared as?", o:["Fire","Wind","Dove","Light"], a:2},
+{q:"Voice from heaven called Jesus?", o:["King","Prophet","Son","Teacher"], a:2},
+{q:"Jesus gathered how many disciples?", o:["10","12","14","7"], a:1},
+
+{q:"Main teaching: Love for?", o:["Money","Power","Neighbour","Self only"], a:2},
+{q:"Jesus taught forgiveness to?", o:["Friends","Enemies","Only rich","Only poor"], a:1},
+{q:"Christian community formed after?", o:["Birth","Death","Resurrection belief","War"], a:2},
+{q:"Jesus’ resurrection means?", o:["Death","Rebirth","Rising again","Punishment"], a:2},
+{q:"Jesus lived in hearts of?", o:["Romans","Followers","Kings","Soldiers"], a:1},
+
+{q:"Christianity spread across?", o:["Only Palestine","Asia","Roman Empire","Africa"], a:2},
+{q:"Christianity became world religion due to?", o:["Wars","Trade","Teachings","Kings"], a:2},
+{q:"Medieval period means?", o:["Modern time","Middle time","Ancient time","Future time"], a:1},
+{q:"Medieval India roughly from?", o:["1st–5th","8th–18th","2nd–6th","10th–20th"], a:1},
+{q:"Early medieval period?", o:["1st–5th","8th–13th","13th–18th","5th–8th"], a:1},
+
+{q:"Later medieval period?", o:["8th–13th","13th–18th","5th–10th","1st–5th"], a:1},
+{q:"Delhi Sultanate phase?", o:["500–1000","1200–1526","1500–1800","800–1200"], a:1},
+{q:"Mughal phase?", o:["1200–1526","1526–18th century","800–1200","1000–1500"], a:1},
+{q:"Medieval Europe?", o:["200–1000","600–1500","100–500","800–2000"], a:1},
+{q:"Messiah means?", o:["King","Saviour","Teacher","Warrior"], a:1},
+
+{q:"Herod was?", o:["King","Governor","Puppet ruler","Priest"], a:2},
+{q:"Jews expected?", o:["King","Messiah","War","Peace"], a:1},
+{q:"Jesus challenged?", o:["Roman law","Greek ideas","Jewish traditions","Persian culture"], a:2},
+{q:"Jesus’ teachings were?", o:["Complex","Simple","Strict","Violent"], a:1},
+{q:"Jesus taught equality of?", o:["Men","Women","Both","None"], a:2},
+
+{q:"Christianity headquarters?", o:["Rome","Vatican City","Athens","Jerusalem"], a:1},
+{q:"St Peter’s Basilica is in?", o:["Rome","Paris","Vatican","London"], a:2},
+{q:"Bible part containing Jesus teachings?", o:["Old Testament","New Testament","Vedas","Torah"], a:1},
+{q:"Jesus died by?", o:["Hanging","Burning","Crucifixion","Drowning"], a:2},
+{q:"Main idea of Jesus teaching?", o:["Power","War","Love & Forgiveness","Wealth"], a:2}
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+  let q = quiz[current];
+  document.getElementById("question").innerText = (current+1)+". "+q.q;
+
+  let optionsHTML = "";
+  q.o.forEach((opt, i) => {
+    optionsHTML += `<button onclick="checkAnswer(${i})">${opt}</button><br>`;
+  });
+  document.getElementById("options").innerHTML = optionsHTML;
+}
+
+function checkAnswer(i) {
+  let correct = quiz[current].a;
+  if(i === correct){
+    score++;
+    document.getElementById("correctSound").play();
+  } else {
+    document.getElementById("wrongSound").play();
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if(current < quiz.length){
+    loadQuestion();
+  } else {
+    document.getElementById("question").innerText = "Quiz Completed!";
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("score").innerText = "Your Score: "+score+"/50";
+  }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
