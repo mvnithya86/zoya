@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplication Game</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #dff6dd;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: #fff0a6;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+    }
+
+    .result-box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: auto;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .question-count {
+      color: #666;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>✖️ Multiplication Game</h2>
+
+  <div class="box" id="quiz"></div>
+
+  <script>
+
+    let questions = [
+      { q: "234 × 3 = ?", answer: 702 },
+      { q: "145 × 4 = ?", answer: 580 },
+      { q: "321 × 2 = ?", answer: 642 },
+      { q: "456 × 5 = ?", answer: 2280 },
+      { q: "678 × 3 = ?", answer: 2034 },
+      { q: "219 × 6 = ?", answer: 1314 },
+      { q: "502 × 7 = ?", answer: 3514 },
+      { q: "384 × 4 = ?", answer: 1536 },
+      { q: "725 × 2 = ?", answer: 1450 },
+      { q: "913 × 3 = ?", answer: 2739 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    // Sounds
+    let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+    let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+    let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+    // Shuffle options
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Generate MCQ options
+    function getOptions(answer) {
+      let options = [answer];
+
+      while (options.length < 4) {
+        let random = answer + Math.floor(Math.random() * 200 - 100);
+
+        if (random > 0 && !options.includes(random)) {
+          options.push(random);
+        }
+      }
+
+      return shuffle(options);
+    }
+
+    // Load question
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showResult();
+        return;
+      }
+
+      let q = questions[current];
+      let options = getOptions(q.answer);
+
+      let html = `
+        <div class="question-count">
+          Question ${current + 1} of ${questions.length}
+        </div>
+
+        <p style="font-size:24px;"><b>${q.q}</b></p>
+      `;
+
+      options.forEach(opt => {
+        html += `
+          <button onclick="check(${opt}, ${q.answer})">
+            ${opt}
+          </button>
+        `;
+      });
+
+      document.getElementById("quiz").innerHTML = html;
+    }
+
+    // Check answer
+    function check(selected, correct) {
+      clickSound.play();
+
+      let buttons = document.querySelectorAll("button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+
+        if (parseInt(btn.innerText) === correct) {
+          btn.style.background = "#a8e6a3";
+        }
+
+        if (parseInt(btn.innerText) === selected && selected !== correct) {
+          btn.style.background = "#ffb3b3";
+        }
+      });
+
+      if (selected === correct) {
+        score++;
+        correctSound.play();
+      } else {
+        wrongSound.play();
+      }
+
+      setTimeout(() => {
+        current++;
+        loadQuestion();
+      }, 1000);
+    }
+
+    // Final Result
+    function showResult() {
+      let message = "";
+      let stars = "";
+
+      if (score === 10) {
+        message = "🌟 Excellent!";
+        stars = "⭐⭐⭐⭐⭐";
+      } else if (score >= 7) {
+        message = "👏 Great Job!";
+        stars = "⭐⭐⭐⭐";
+      } else if (score >= 4) {
+        message = "👍 Good!";
+        stars = "⭐⭐⭐";
+      } else {
+        message = "💪 Keep Practicing!";
+        stars = "⭐⭐";
+      }
+
+      document.getElementById("quiz").innerHTML = `
+        <div class="result-box">
+          <h3>${message}</h3>
+          <p>Your Score: <b>${score}/10</b></p>
+          <p style="font-size:24px">${stars}</p>
+        </div>
+      `;
+    }
+
+    // Start game
+    loadQuestion();
+
+  </script>
+
+</body>
+</html>
