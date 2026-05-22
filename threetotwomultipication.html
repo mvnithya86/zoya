@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Decimal Math Game</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #cfe8f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 450px;
+      margin: auto;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #fff4b3;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🔢 Decimal Math Game</h2>
+<div id="score">Score: 0</div>
+
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+
+<script>
+let questions = [
+  /* ---------- 3-Digit by 2-Digit Whole Number Multiplication ---------- */
+  {q: "124 × 32 = ?", options: ["3,968", "3,848", "39,680"], answer: 0},
+  {q: "425 × 16 = ?", options: ["6,800", "4,250", "6,500"], answer: 0},
+  {q: "215 × 24 = ?", options: ["5,160", "5,040", "1,290"], answer: 0},
+  {q: "612 × 15 = ?", options: ["9,180", "6,120", "9,070"], answer: 0},
+  {q: "334 × 22 = ?", options: ["7,348", "7,248", "73,480"], answer: 0},
+  {q: "250 × 48 = ?", options: ["12,000", "10,000", "12,500"], answer: 0},
+  {q: "152 × 35 = ?", options: ["5,320", "4,560", "5,220"], answer: 0},
+  {q: "208 × 45 = ?", options: ["9,360", "8,320", "9,100"], answer: 0},
+  {q: "741 × 12 = ?", options: ["8,892", "7,410", "8,792"], answer: 0},
+  {q: "315 × 26 = ?", options: ["8,190", "7,950", "8,050"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+// Sound effects
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML =
+      "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>${q.q}</b></p>`;
+  
+  // Safely passing the array index to avoid character breaking
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play();
+  
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3"; 
+    }
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3"; 
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+    correctSound.play();
+  } else {
+    wrongSound.play();
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1200);
+}
+
+loadQuestion();
+</script>
+
+
+</body>
+</html>
