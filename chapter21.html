@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>2-Digit and 1-Digit Subtraction Game</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #cfe8f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 450px;
+      margin: auto;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #fff4b3;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📅 Chapter 2: Addition Challenge</h2>
+
+<div id="score">Score: 0</div>
+
+<div class="box" id="quiz"></div>
+
+<div id="result"></div>
+
+<script>
+
+let questions = [
+  // Section 1: Successors & Properties
+  {q: "When one is added to a given number, we get the ________ of that number.", options: ["Successor", "Predecessor", "Sum", "Addend"], answer: 0},
+  {q: "What is the successor of 9,999?", options: ["10,000", "9,998", "9,000", "10,001"], answer: 0},
+  {q: "What is the successor of 8,091?", options: ["8,092", "8,090", "8,100", "9,000"], answer: 0},
+  {q: "Find the successor of 7,799.", options: ["7,800", "7,798", "7,700", "7,801"], answer: 0},
+  {q: "Which number is the successor of 6,029?", options: ["6,030", "6,028", "6,100", "6,020"], answer: 0},
+  {q: "The process of finding the total or sum of given numbers is called ________.", options: ["Addition", "Subtraction", "Multiplication", "Division"], answer: 0},
+  {q: "When two or more numbers are added, the numbers being added are called ________.", options: ["Addends", "Sums", "Successors", "Totals"], answer: 0},
+  {q: "The result obtained on adding numbers is called the ________.", options: ["Sum", "Addend", "Difference", "Successor"], answer: 0},
+  {q: "Changing the order of the numbers being added does not change the sum. This means addition is ________.", options: ["Commutative", "Zero Property", "Regrouping", "Successor"], answer: 0},
+  {q: "Fill in the blank: 120 + 20 = 20 + ____", options: ["120", "20", "140", "0"], answer: 0},
+  {q: "The sum of any number and zero is ________.", options: ["The number itself", "Zero", "One", "Its successor"], answer: 0},
+  {q: "Fill in the blank: 1,250 + 0 = ____", options: ["1,250", "0", "1,251", "1,200"], answer: 0},
+
+  // Section 2: Addition Without & With Regrouping
+  {q: "Find the sum without regrouping: 130 + 1,050", options: ["1,180", "1,080", "1,150", "1,280"], answer: 0},
+  {q: "Add the numbers: 6,123 + 2,613", options: ["8,736", "8,735", "8,700", "7,736"], answer: 0},
+  {q: "What is 2,034 + 1,135?", options: ["3,169", "3,179", "3,269", "2,169"], answer: 0},
+  {q: "Regrouping ones: 15 ones = 1 ten + ____ ones", options: ["5", "15", "10", "0"], answer: 0},
+  {q: "Regrouping tens: 11 tens = ____ hundred + 1 ten", options: ["1", "11", "10", "0"], answer: 0},
+  {q: "Find the sum with regrouping: 2,451 + 3,529", options: ["5,980", "5,970", "5,880", "6,000"], answer: 0},
+  {q: "What is 6,405 + 2,005?", options: ["8,410", "8,400", "8,415", "7,410"], answer: 0},
+
+  // Section 3: Number Stories & Magic Squares
+  {q: "A school has 3,666 girls and 4,127 boys. Find the total number of students.", options: ["7,793", "7,783", "7,693", "8,793"], answer: 0},
+  {q: "A library has 3,258 story books, 1,220 puzzle books, and 2,200 comic books. Find the total number of books.", options: ["6,678", "6,578", "6,688", "7,678"], answer: 0},
+  {q: "A factory made 7,500 chocolate bars on Monday and 550 more on Tuesday. How many bars did they make on Tuesday?", options: ["8,050", "7,550", "8,000", "8,150"], answer: 0},
+  {q: "A show was attended by 2,565 children and 4,343 adults. How many people attended in total?", options: ["6,908", "6,808", "6,918", "7,908"], answer: 0},
+  {q: "A special grid where the sum of every row, column, and diagonal is equal is called a ________.", options: ["Magic Square", "Box Diagram", "Place Value Chart", "Addend Grid"], answer: 0},
+  {q: "In a standard 3x3 magic square using numbers from 1 to 9, what is the magic sum?", options: ["15", "12", "18", "20"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+// Sound Effects
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML =
+      "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>Question ${current + 1} of ${questions.length}:</b></p><p><b>${q.q}</b></p>`;
+
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3";
+    }
+
+    if (idx === selectedIndex &&
+        selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3";
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+    correctSound.play().catch(e => {});
+  } else {
+    wrongSound.play().catch(e => {});
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1200);
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
