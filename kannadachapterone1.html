@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kannada Grammar Challenge - Set 1</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #cfe8f7;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 550px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .score-board {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #f1e49b;
+      background: #fff4b3;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover:not([disabled]) {
+      background: #ffe875;
+    }
+    .translation {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📝 Kannada Grammar Quiz - Set 1</h2>
+<div class="score-board" id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "ಕನ್ನಡ ವರ್ಣಮಾಲೆಯಲ್ಲಿ ಒಟ್ಟು ಎಷ್ಟು ಅಕ್ಷರಗಳಿವೆ? <span class='translation'>(How many letters are there in total in the Kannada alphabet?)</span>", options: ["49", "46", "34"], answer: 0},
+  {q: "ಕನ್ನಡ ವರ್ಣಮಾಲೆಯಲ್ಲಿ ಸ್ವರಗಳು ಎಷ್ಟು? <span class='translation'>(How many vowels are there in the Kannada alphabet?)</span>", options: ["13", "14", "11"], answer: 0},
+  {q: "ಕನ್ನಡ ವರ್ಣಮಾಲೆಯಲ್ಲಿ ವ್ಯಂಜನಗಳು ಎಷ್ಟು? <span class='translation'>(How many consonants are there in the Kannada alphabet?)</span>", options: ["34", "25", "9"], answer: 0},
+  {q: "ಯೋಗವಾಹಗಳು ಒಟ್ಟು ಎಷ್ಟು ಇವೆ? <span class='translation'>(How many Yogavahas are there in total?)</span>", options: ["2", "3", "5"], answer: 0},
+  {q: "ಹ್ರಸ್ವಸ್ವರಗಳು ಎಷ್ಟು ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿವೆ? <span class='translation'>(How many letters do short vowels / Hrasva Swaras have?)</span>", options: ["6", "7", "5"], answer: 0},
+  {q: "ದೀರ್ಘಸ್ವರಗಳು ಒಟ್ಟು ಎಷ್ಟು ಇವೆ? <span class='translation'>(How many long vowels / Deergha Swaras are there in total?)</span>", options: ["7", "6", "8"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಹ್ರಸ್ವಸ್ವರ? <span class='translation'>(Which of the following is a short vowel / Hrasva Swara?)</span>", options: ["ಇ", "ಈ", "ಐ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ದೀರ್ಘಸ್ವರವನ್ನು ಗುರುತಿಸಿ: <span class='translation'>(Identify the long vowel / Deergha Swara among the following:)</span>", options: ["ಊ", "ಉ", "ಎ"], answer: 0},
+  {q: "ಒಂದು ಮಾತ್ರೆಯ ಕಾಲದಲ್ಲಿ ಉಚ್ಚರಿಸುವ ಸ್ವರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are vowels pronounced in the duration of one matra called?)</span>", options: ["ಹ್ರಸ್ವಸ್ವರ", "ದೀರ್ಘಸ್ವರ", "ಪ್ಲುತಸ್ವರ"], answer: 0},
+  {q: "ಎರಡು ಮಾತ್ರೆಗಳ ಕಾಲದಲ್ಲಿ ಉಚ್ಚರಿಸುವ ಸ್ವರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are vowels pronounced in the duration of two matras called?)</span>", options: ["ದೀರ್ಘಸ್ವರ", "ಹ್ರಸ್ವಸ್ವರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "'ಅ' ಅಕ್ಷರವು ಯಾವ ಗುಂಪಿಗೆ ಸೇರುತ್ತದೆ? <span class='translation'>(Which group does the letter 'ಅ' belong to?)</span>", options: ["ಹ್ರಸ್ವಸ್ವರ", "ದೀರ್ಘಸ್ವರ", "ವ್ಯಂಜನ"], answer: 0},
+  {q: "'ಓ' ಅಕ್ಷರವು ಯಾವ ಗುಂಪಿಗೆ ಸೇರುತ್ತದೆ? <span class='translation'>(Which group does the letter 'ಓ' belong to?)</span>", options: ["ದೀರ್ಘಸ್ವರ", "ಹ್ರಸ್ವಸ್ವರ", "ಅನುನಾಸಿಕ"], answer: 0},
+  {q: "'ಋ' ಅಕ್ಷರವು ಯಾವ ರೀತಿಯ ಸ್ವರ? <span class='translation'>(What type of vowel is the letter 'ಋ'?)</span>", options: ["ಹ್ರಸ್ವಸ್ವರ", "ದೀರ್ಘಸ್ವರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "'ಐ' ಮತ್ತು 'ಔ' ಅಕ್ಷರಗಳನ್ನು ಏನೆಂದು ಕರೆಯುತ್ತಾರೆ? <span class='translation'>(What are the letters 'ಐ' and 'ಔ' called?)</span>", options: ["ಸಂಧ್ಯಕ್ಷರಗಳು / ದೀರ್ಘಸ್ವರಗಳು", "ಹ್ರಸ್ವಸ್ವರಗಳು", "ವ್ಯಂಜನಗಳು"], answer: 0},
+  {q: "ಸ್ವತಂತ್ರವಾಗಿ ಉಚ್ಚರಿಸಲು ಬರುವ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are letters that can be pronounced independently called?)</span>", options: ["ಸ್ವರಗಳು", "ವ್ಯಂಜನಗಳು", "ಒತ್ತಕ್ಷರಗಳು"], answer: 0},
+  {q: "ವರ್ಣಮಾಲೆಯ ಮೊದಲ ಅಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which is the first letter of the alphabet?)</span>", options: ["ಅ", "ಆ", "ಕ"], answer: 0},
+  {q: "ಸ್ವರಗಳ ಸಹಾಯದಿಂದ ಉಚ್ಚರಿಸಲ್ಪಡುವ ಅಕ್ಷರಗಳು ಯಾವುವು? <span class='translation'>(Which letters are pronounced with the help of vowels?)</span>", options: ["ವ್ಯಂಜನಗಳು", "ಸ್ವರಗಳು", "ಯೋಗವಾಹಗಳು"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಸ್ವರಾಕ್ಷರ ಅಲ್ಲ? <span class='translation'>(Which of the following is NOT a vowel letter?)</span>", options: ["ಕ", "ಉ", "ಏ"], answer: 0},
+  {q: "'ಐದು' ಎಂಬ ಪದದಲ್ಲಿರುವ ಮೊದಲ ಅಕ್ಷರ ಯಾವ ಗುಂಪಿಗೆ ಸೇರಿದೆ? <span class='translation'>(The first letter of the word 'ಐದು' belongs to which group?)</span>", options: ["ದೀರ್ಘಸ್ವರ", "ಹ್ರಸ್ವಸ್ವರ", "ವ್ಯಂಜನ"], answer: 0},
+  {q: "'ಋಷಿ' ಪದದ ಮೊದಲ ಅಕ್ಷರ ಯಾವುದು? <span class='translation'>(What is the first letter of the word 'ಋಷಿ'?)</span>", options: ["ಋ", "ಋೂ", "ರು"], answer: 0},
+  {q: "'ಒಂಟೆ' ಪದದ ಮೊದಲ ಅಕ್ಷರವು ಯಾವ ಸ್ವರ? <span class='translation'>(The first letter of the word 'ಒಂಟೆ' is which vowel?)</span>", options: ["ಹ್ರಸ್ವಸ್ವರ", "ದೀರ್ಘಸ್ವರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "'ಆನೆ' ಪದದಲ್ಲಿರುವ 'ಆ' ಅಕ್ಷರ ಉಚ್ಚರಿಸಲು ಎಷ್ಟು ಮಾತ್ರೆ ಬೇಕು? <span class='translation'>(How many matras are needed to pronounce the letter 'ಆ' in the word 'ಆನೆ'?)</span>", options: ["2 ಮಾತ್ರೆ", "1 ಮಾತ್ರೆ", "3 ಮಾತ್ರೆ"], answer: 0},
+  {q: "'ಇಲಿ' ಪದದಲ್ಲಿರುವ ಎರಡು ಸ್ವರಗಳು ಯಾವ ಗುಂಪಿನವು? <span class='translation'>(The two vowels in the word 'ಇಲಿ' belong to which group?)</span>", options: ["ಹ್ರಸ್ವಸ್ವರ", "ದೀರ್ಘಸ್ವರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಹ್ರಸ್ವಸ್ವರಗಳ ಸರಿಯಾದ ಗುಂಪು ಯಾವುದು? <span class='translation'>(Which of the following is the correct group of short vowels?)</span>", options: ["ಅ, ಇ, ಉ, ಎ, ಒ", "ಆ, ಈ, ಊ, ಏ, ಓ", "ಅ, ಆ, ಇ, ಈ, ಉ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ದೀರ್ಘಸ್ವರಗಳ ಸರಿಯಾದ ಗುಂಪು ಯಾವುದು? <span class='translation'>(Which of the following is the correct group of long vowels?)</span>", options: ["ಆ, ಈ, ಊ, ಏ, ಓ", "ಅ, ಇ, ಉ, ಎ, ಒ", "ಕ, ಚ, ಟ, ತ, ಪ"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>Question ${current + 1}: ${q.q}</b></p>`;
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3";
+    }
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3";
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
