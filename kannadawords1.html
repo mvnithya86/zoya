@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 2 Kannada Ottakshara Challenge</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #cfe8f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .clue-label {
+      font-size: 16px;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .target-word {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2980b9;
+      background: #e8f4fc;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #fff4b3;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    #result {
+      font-size: 24px;
+      font-weight: bold;
+      color: #27ae60;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📅 ಒತ್ತಕ್ಷರ ಕಲಿಕಾ ಪಾಠ ೨ ('ಕ' ಒತ್ತು) - ಪುಟ 15</h2>
+
+<div id="score">Score: 0</div>
+
+<div class="box" id="quiz"></div>
+
+<div id="result"></div>
+
+<script>
+
+let questions = [
+  // Row 1
+  {q: "Sister", options: ["ಅಕ್ಕ", "ಚಿಕ್ಕ", "ಬೆಕ್ಕು"], answer: 0},
+  {q: "Small", options: ["ಚಿಕ್ಕ", "ತಕ್ಕ", "ರೆಕ್ಕೆ"], answer: 0},
+  {q: "Bird", options: ["ಹಕ್ಕಿ", "ಪುಕ್ಕ", "ಅಕ್ಕ"], answer: 0},
+  {q: "Wings", options: ["ರೆಕ್ಕೆ", "ಹಕ್ಕು", "ಚಕ್ಕಡಿ"], answer: 0},
+
+  // Row 2
+  {q: "Cat", options: ["ಬೆಕ್ಕು", "ಹಕ್ಕಿ", "ಮಕ್ಕಳು"], answer: 0},
+  {q: "Fitting reply", options: ["ತಕ್ಕ", "ಚಿಕ್ಕ", "ಸಕ್ಕರೆ"], answer: 0},
+  {q: "Feather", options: ["ಪುಕ್ಕ", "ರೆಕ್ಕೆ", "ಬೊಕ್ಕಸ"], answer: 0},
+  {q: "Right / Demand", options: ["ಹಕ್ಕು", "ಅಕ್ಕ", "ತಕ್ಕಡಿ"], answer: 0},
+
+  // Row 3
+  {q: "Chakkuli (Snack)", options: ["ಚಕ್ಕುಲಿ", "ಏಲಕ್ಕಿ", "ಕೊಕ್ಕರೆ"], answer: 0},
+  {q: "Children", options: ["ಮಕ್ಕಳು", "ಬೆಕ್ಕು", "ತಕ್ಕ"], answer: 0},
+  {q: "Sugar", options: ["ಸಕ್ಕರೆ", "ಬೊಕ್ಕಸ", "ಹಕ್ಕಿ"], answer: 0},
+  {q: "Weighing Scale", options: ["ತಕ್ಕಡಿ", "ಚಕ್ಕಡಿ", "ರೆಕ್ಕೆ"], answer: 0},
+
+  // Row 4
+  {q: "Cardamom", options: ["ಏಲಕ್ಕಿ", "ಚಕ್ಕುಲಿ", "ಸಕ್ಕರೆ"], answer: 0},
+  {q: "Crane Bird", options: ["ಕೊಕ್ಕರೆ", "ಹಕ್ಕಿ", "ಪುಕ್ಕ"], answer: 0},
+  {q: "Bullock Cart", options: ["ಚಕ್ಕಡಿ", "ತಕ್ಕಡಿ", "ಮಕ್ಕಳು"], answer: 0},
+  {q: "Treasure Chest", options: ["ಬೊಕ್ಕಸ", "ಹಕ್ಕು", "ಅಕ್ಕ"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML =
+      "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-label">English Word:</div>`;
+  html += `<div class="target-word">${q.q}</div>`;
+
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3"; 
+    }
+
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3"; 
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+    correctSound.play().catch(e => {});
+  } else {
+    wrongSound.play().catch(e => {});
+  }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
