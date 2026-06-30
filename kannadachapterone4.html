@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kannada Grammar Challenge - Set 5</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #fff3e0;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 550px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .score-board {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #e65100;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #ffe0b2;
+      background: #fff3e0;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover:not([disabled]) {
+      background: #ffe0b2;
+    }
+    .translation {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+    .big-picture-box {
+      border: 3px solid #ff9800;
+      padding: 20px;
+      margin: 15px 0;
+      background: #fffde7;
+      font-size: 55px;
+      border-radius: 12px;
+      display: inline-block;
+      width: 80%;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+<h2>📝 Kannada Grammar Quiz - Set 5 (Visual Challenge)</h2>
+<div class="score-board" id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "Look at the picture. What is the correct Kannada name for 'Elephant'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Elephant' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐘</div>", options: ["ಆನೆ", "ಅಮ್ಮ", "ಇಲಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Snake'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Snake' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐍</div>", options: ["ಹಾವು", "ಹಕ್ಕಿ", "ಕಪ್ಪೆ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Tree'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Tree' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🌳</div>", options: ["ಮರ", "ಗಿಡ", "ಹೂವು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Water'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Water' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>💧</div>", options: ["ನೀರು", "ಹಾಲು", "ರಸ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Sun'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Sun' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>☀️</div>", options: ["ಸೂರ್ಯ", "ಚಂದ್ರ", "ನಕ್ಷತ್ರ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Moon'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Moon' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🌙</div>", options: ["ಚಂದ್ರ", "ಸೂರ್ಯ", "ಮೋಡ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Bird'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Bird' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐦</div>", options: ["ಹಕ್ಕಿ / ಪಕ್ಷಿ", "ಪ್ರಾಣಿ", "ಮೀನು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Fish'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Fish' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐟</div>", options: ["ಮೀನು", "ಏಡಿ", "ಕಪ್ಪೆ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Flower'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Flower' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🌸</div>", options: ["ಹೂವು", "ಎಲೆ", "ಹಣ್ಣು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Fruit'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Fruit' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🍎</div>", options: ["ಹಣ್ಣು", "ತರಕಾರಿ", "ಬೀಜ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'House'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'House' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🏠</div>", options: ["ಮನೆ", "ಶಾಲೆ", "ದೇವಸ್ಥಾನ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Book'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Book' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>📖</div>", options: ["ಪುಸ್ತಕ", "ಲೇಖನಿ", "ಚಿತ್ರ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Hand'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Hand' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>✋</div>", options: ["ಕೈ", "ಕಾಲು", "ಕಣ್ಣು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Eye'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Eye' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>👁️</div>", options: ["ಕಣ್ಣು", "ಮೂಗು", "ಕಿವಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Dog'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Dog' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐶</div>", options: ["ನಾಯಿ", "ಬೆಕ್ಕು", "ನರಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Cat'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Cat' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐱</div>", options: ["ಬೆಕ್ಕು", "ಇಲಿ", "ಕೋತಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Frog'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Frog' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐸</div>", options: ["ಕಪ್ಪೆ", "ಆಮೆ", "ಏಡಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Car'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Car' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🚗</div>", options: ["ಕಾರು", "ಬಸ್ಸು", "ಸೈಕಲ್"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Umbrella'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Umbrella' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>☂️</div>", options: ["ಛತ್ರಿ", "ಬಟ್ಟೆ", "ಟೋಪಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Star'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Star' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>⭐</div>", options: ["ನಕ್ಷತ್ರ", "ಮಿಂಚು", "ಬೆಳಕು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Cow'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Cow' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🐄</div>", options: ["ಹಸು / ಆಕಳು", "ಎಮ್ಮೆ", "ಕುರಿ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Ring'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Ring' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>💍</div>", options: ["ಉಂಗುರ", "ಬಳೆ", "ಹಾರ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Leaf'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Leaf' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🍃</div>", options: ["ಎಲೆ", "ಕಾಯಿ", "ಬೇರು"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Milk'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Milk' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>🥛</div>", options: ["ಹಾಲು", "ಮೊಸರು", "ಮಜ್ಜಿಗೆ"], answer: 0},
+  {q: "Look at the picture. What is the correct Kannada name for 'Boy'? <span class='translation'>(ಚಿತ್ರವನ್ನು ನೋಡಿ 'Boy' ಗೆ ಸರಿಯಾದ ಕನ್ನಡ ಪದ ಯಾವುದು?)</span> <br><div class='big-picture-box'>👦</div>", options: ["ಹುಡುಗ", "ಹುಡುಗಿ", "ಮಗು"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>Question ${current + 1}: ${q.q}</b></p>`;
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3";
+    }
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3";
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
