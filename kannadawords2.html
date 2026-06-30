@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 2 Kannada Ottakshara Challenge - Page 11</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #cfe8f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .clue-text {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .target-word {
+      font-size: 36px;
+      font-weight: bold;
+      color: #2980b9;
+      background: #e8f4fc;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #fff4b3;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    #result {
+      font-size: 24px;
+      font-weight: bold;
+      color: #27ae60;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📅 ಒತ್ತಕ್ಷರ ಕಲಿಕಾ ಪಾಠ ೧ ('ಜ' ಮತ್ತು 'ಟ' ಒತ್ತು) - ಪುಟ 11</h2>
+
+<div id="score">Score: 0</div>
+
+<div class="box" id="quiz"></div>
+
+<div id="result"></div>
+
+<script>
+
+let questions = [
+  // 'ಜ' ಒತ್ತು ಪದಗಳು (8 words from top section of image_2.png)
+  {q: "ಚಿತ್ರದಲ್ಲಿರುವ ತಾತನಿಗೆ ಏನೆನ್ನುತ್ತಾರೆ? (Grandfather)", options: ["ಅಜ್ಜ", "ಅಜ್ಜಿ", "ಗೆಜ್ಜೆ"], answer: 0},
+  {q: "ಚಿತ್ರದಲ್ಲಿರುವ ಅಜ್ಜಿಗೆ ಏನೆನ್ನುತ್ತಾರೆ? (Grandmother)", options: ["ಅಜ್ಜಿ", "ಅಜ್ಜ", "ಮಜ್ಜಿಗೆ"], answer: 0},
+  {q: "ಕಾಲುಕಟ್ಟುವ ಆಭರಣ / ಕುಣಿಯುವಾಗ ಬಳಸುವ ವಸ್ತು? (Anklet bells)", options: ["ಗೆಜ್ಜೆ", "ಹೆಜ್ಜೆ", "ಕಜ್ಜಾಯ"], answer: 0},
+  {q: "ನಡೆಯುವಾಗ ಮೂಡುವ ಗುರುತು ಯಾವುದು? (Footsteps)", options: ["ಹೆಜ್ಜೆ", "ಗೆಜ್ಜೆ", "ಹಜ್ಜೇನು"], answer: 0},
+  {q: "ಬೇಸಿಗೆಯಲ್ಲಿ ಕುಡಿಯುವ ತಂಪಾದ ಪಾನೀಯ? (Buttermilk)", options: ["ಮಜ್ಜಿಗೆ", "ಹಜ್ಜೇನು", "ಗಜ್ಜರಿ"], answer: 0},
+  {q: "ಚಿತ್ರದಲ್ಲಿರುವ ಸಿಹಿ ತಿಂಡಿಯ ಹೆಸರೇನು? (Sweet Dish)", options: ["ಕಜ್ಜಾಯ", "ಮಜ್ಜಿಗೆ", "ಅಜ್ಜ"], answer: 0},
+  {q: "ಕಾಡಿನಲ್ಲಿ ಸಿಗುವ ದೊಡ್ಡ ಜೇನುಗೂಡು? (Wild beehive)", options: ["ಹಜ್ಜೇನು", "ಕಜ್ಜಾಯ", "ಹೆಜ್ಜೆ"], answer: 0},
+  {q: "ಚಿತ್ರದಲ್ಲಿರುವ ತರಕಾರಿ ಯಾವುದು? (Carrot)", options: ["ಗಜ್ಜರಿ", "ಗೆಜ್ಜೆ", "ಅಜ್ಜಿ"], answer: 0},
+
+  // 'ಟ' ಒತ್ತು ಪದಗಳು (12 words from bottom section of image_2.png)
+  {q: "ಚಿತ್ರದಲ್ಲಿರುವ ಎತ್ತರವಾದ ಶಿಖರ ಯಾವುದು? (Mountain)", options: ["ಬೆಟ್ಟ", "ಜಟ್ಟಿ", "ರಟ್ಟೆ"], answer: 0},
+  {q: "ಕುಸ್ತಿ ಆಡುವ ವ್ಯಕ್ತಿಗೆ ಏನೆನ್ನುತ್ತಾರೆ? (Wrestler)", options: ["ಜಟ್ಟಿ", "ಬೆಟ್ಟ", "ಮೊಟ್ಟೆ"], answer: 0},
+  {q: "ಚಿತ್ರದಲ್ಲಿ ತೋರಿಸಿರುವ ಕೈ ಭಾಗ ಯಾವುದು? (Forearm)", options: ["ರಟ್ಟೆ", "ರೊಟ್ಟಿ", "ತಟ್ಟೆ"], answer: 0},
+  {q: "ಕೋಳಿ ಇಡುವ ಬಿಳಿ ಬಣ್ಣದ ವಸ್ತು ಯಾವುದು? (Egg)", options: ["ಮೊಟ್ಟೆ", "ಬುಟ್ಟಿ", "ಇಟ್ಟಿಗೆ"], answer: 0},
+  {q: "ತಿನ್ನುವ ದುಂಡಗಿನ ಆಹಾರ ಪದಾರ್ಥ ಯಾವುದು? (Roti)", options: ["ರೊಟ್ಟಿ", "ರಟ್ಟೆ", "ತೊಟ್ಟಿಲು"], answer: 0},
+  {q: "ಹೂವು ಅಥವಾ ಹಣ್ಣುಗಳನ್ನು ಇಡುವ ವಸ್ತು ಯಾವುದು? (Basket)", options: ["ಬುಟ್ಟಿ", "ಮೊಟ್ಟೆ", "ಮೆಟ್ಟಿಲು"], answer: 0},
+  {q: "ಊಟ ಮಾಡಲು ಬಳಸುವ ಪಾತ್ರೆ ಯಾವುದು? (Plate)", options: ["ತಟ್ಟೆ", "ರೊಟ್ಟಿ", "ಪಟ್ಟಣ"], answer: 0},
+  {q: "ಮನೆ ಕಟ್ಟಲು ಬಳಸುವ ಕೆಂಪು ಕಲ್ಲು ಯಾವುದು? (Brick)", options: ["ಇಟ್ಟಿಗೆ", "ಹೆಬ್ಬೆಟ್ಟು", "ಬುಟ್ಟಿ"], answer: 0},
+  {q: "ದೊಡ್ಡ ನಗರಕ್ಕೆ ಏನೆನ್ನುತ್ತಾರೆ? (City/Town)", options: ["ಪಟ್ಟಣ", "ತೊಟ್ಟಿಲು", "ಬೆಟ್ಟ"], answer: 0},
+  {q: "ಮಗುವನ್ನು ಮಲಗಿಸುವ ತೂಗು ಮಂಚ ಯಾವುದು? (Cradle)", options: ["ತೊಟ್ಟಿಲು", "ಪಟ್ಟಣ", "ಮೆಟ್ಟಿಲು"], answer: 0},
+  {q: "ಕೈ ಬೆರಳುಗಳಲ್ಲಿ ದೊಡ್ಡದಾದ ಬೆರಳು ಯಾವುದು? (Thumb)", options: ["ಹೆಬ್ಬೆಟ್ಟು", "ಇಟ್ಟಿಗೆ", "ಜಟ್ಟಿ"], answer: 0},
+  {q: "ಮೇಲಕ್ಕೆ ಹತ್ತಲು ಬಳಸುವ ಮೆಟ್ಟಿಲುಗಳು? (Steps/Stairs)", options: ["ಮೆಟ್ಟಿಲು", "ತಟ್ಟೆ", "ಹೆಬ್ಬೆಟ್ಟು"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+// Audio links from Google assets
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML =
+      "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">ಚಿತ್ರದ ಸುಳಿವು (Clue):</div>`;
+  html += `<div class="target-word">${q.q}</div>`;
+
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3"; // Correct option turns Green
+    }
+
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3"; // Wrong choice turns Red
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+    correctSound.play().catch(e => {});
+  } else {
+    wrongSound.play().catch(e => {});
+  }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
