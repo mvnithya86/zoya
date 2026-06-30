@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kannada Grammar Challenge - Set 2</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #e3f2fd;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 550px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .score-board {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #b3e5fc;
+      background: #e1f5fe;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover:not([disabled]) {
+      background: #b3e5fc;
+    }
+    .translation {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📝 Kannada Grammar Quiz - Set 2</h2>
+<div class="score-board" id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "ವ್ಯಂಜನಗಳಲ್ಲಿ ಎಷ್ಟು ವಿಧಗಳಿವೆ? <span class='translation'>(How many types of consonants are there?)</span>", options: ["2", "3", "5"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳು ಒಟ್ಟು ಎಷ್ಟು ಇವೆ? <span class='translation'>(How many structured consonants / Vargeeya Vyanjanas are there in total?)</span>", options: ["25", "34", "9"], answer: 0},
+  {q: "ಅವರ್ಗೀಯ ವ್ಯಂಜನಗಳು ಒಟ್ಟು ಎಷ್ಟು ಇವೆ? <span class='translation'>(How many unstructured consonants / Avargeeya Vyanjanas are there in total?)</span>", options: ["9", "25", "5"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳಲ್ಲಿ ಒಟ್ಟು ಎಷ್ಟು ವರ್ಗಗಳಿವೆ? <span class='translation'>(How many classes/groups are there in structured consonants?)</span>", options: ["5", "3", "7"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನದ ಪ್ರತಿ ವರ್ಗದಲ್ಲಿ ಎಷ್ಟು ಅಕ್ಷರಗಳಿರುತ್ತವೆ? <span class='translation'>(How many letters are there in each class of structured consonants?)</span>", options: ["5", "10", "9"], answer: 0},
+  {q: "ಕಡಿಮೆ ಉಸಿರಿನಿಂದ ಉಚ್ಚರಿಸುವ ವ್ಯಂಜನಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are consonants pronounced with less breath called?)</span>", options: ["ಅಲ್ಪಪ್ರಾಣ", "ಮಹಾಪ್ರಾಣ", "ಅನುನಾಸಿಕ"], answer: 0},
+  {q: "ಹೆಚ್ಚು ಉಸಿರು ಕೊಟ್ಟು ಉಚ್ಚರಿಸುವ ವ್ಯಂಜನಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are consonants pronounced with more breath called?)</span>", options: ["ಮಹಾಪ್ರಾಣ", "ಅಲ್ಪಪ್ರಾಣ", "ಅವರ್ಗೀಯ"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳಲ್ಲಿ ಅಲ್ಪಪ್ರಾಣ ಅಕ್ಷರಗಳು ಎಷ್ಟು? <span class='translation'>(How many Alpaprana letters are there in structured consonants?)</span>", options: ["10", "5", "25"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳಲ್ಲಿ ಮಹಾಪ್ರಾಣ ಅಕ್ಷರಗಳು ಎಷ್ಟು? <span class='translation'>(How many Mahaprana letters are there in structured consonants?)</span>", options: ["10", "5", "9"], answer: 0},
+  {q: "ಮೂಗಿನ ಸಹಾಯದಿಂದ ಉಚ್ಚರಿಸುವ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are letters pronounced with the help of the nose called?)</span>", options: ["ಅನುನಾಸಿಕಗಳು", "ಅಲ್ಪಪ್ರಾಣಗಳು", "ಮಹಾಪ್ರಾಣಗಳು"], answer: 0},
+  {q: "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳಲ್ಲಿ ಅನುನಾಸಿಕ ಅಕ್ಷರಗಳು ಎಷ್ಟು? <span class='translation'>(How many nasal letters / Anunasikas are there in structured consonants?)</span>", options: ["5", "10", "9"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಅಲ್ಪಪ್ರಾಣ ಅಕ್ಷರ? <span class='translation'>(Which of the following is an Alpaprana letter?)</span>", options: ["ಕ", "ಖ", "ಘ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಮಹಾಪ್ರಾಣ ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ: <span class='translation'>(Identify the Mahaprana letter among the following:)</span>", options: ["ಛ", "ಚ", "ಜ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಅನುನಾಸಿಕ ಅಕ್ಷರ? <span class='translation'>(Which of the following is an Anunasika letter?)</span>", options: ["ಮ", "ಬ", "ಭ"], answer: 0},
+  {q: "'ಯ' ದಿಂದ 'ಳ' ವರೆಗಿನ ಅಕ್ಷರಗಳನ್ನು ಏನೆಂದು ಕರೆಯುತ್ತಾರೆ? <span class='translation'>(What are the letters from 'ಯ' to 'ಳ' called?)</span>", options: ["ಅವರ್ಗೀಯ ವ್ಯಂಜನಗಳು", "ವರ್ಗೀಯ ವ್ಯಂಜನಗಳು", "ಸ್ವರಗಳು"], answer: 0},
+  {q: "ಮೊದಲನೆಯ ವರ್ಗ ಯಾವುದು? <span class='translation'>(Which is the first class among structured consonants?)</span>", options: ["ಕ-ವರ್ಗ", "ಚ-ವರ್ಗ", "ಟ-ವರ್ಗ"], answer: 0},
+  {q: "'ಟ, ಠ, ಡ, ಢ, ಣ' ಇವು ಯಾವ ವರ್ಗಕ್ಕೆ ಸೇರಿವೆ? <span class='translation'>(To which class do 'ಟ, ಠ, ಡ, ಢ, ಣ' belong?)</span>", options: ["ಟ-ವರ್ಗ", "ತ-ವರ್ಗ", "ಪ-ವರ್ಗ"], answer: 0},
+  {q: "'ರ' ಅಕ್ಷರವು ಯಾವ ಗುಂಪಿಗೆ ಸೇರುತ್ತದೆ? <span class='translation'>(Which group does the letter 'ರ' belong to?)</span>", options: ["ಅವರ್ಗೀಯ ವ್ಯಂಜನ", "ವರ್ಗೀಯ ವ್ಯಂಜನ", "ಮಹಾಪ್ರಾಣ"], answer: 0},
+  {q: "ಪ್ರತಿ ವರ್ಗದ 2 ಮತ್ತು 4ನೇ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are the 2nd and 4th letters of each class called?)</span>", options: ["ಮಹಾಪ್ರಾಣಗಳು", "ಅಲ್ಪಪ್ರಾಣಗಳು", "ಅನುನಾಸಿಕಗಳು"], answer: 0},
+  {q: "ಪ್ರತಿ ವರ್ಗದ 1 ಮತ್ತು 3ನೇ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are the 1st and 3rd letters of each class called?)</span>", options: ["ಅಲ್ಪಪ್ರಾಣಗಳು", "ಮಹಾಪ್ರಾಣಗಳು", "ಅನುನಾಸಿಕಗಳು"], answer: 0},
+  {q: "ಪ್ರತಿ ವರ್ಗದ 5ನೇ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are the 5th letters of each class called?)</span>", options: ["ಅನುನಾಸಿಕಗಳು", "ಅಲ್ಪಪ್ರಾಣಗಳು", "ಮಹಾಪ್ರಾಣಗಳು"], answer: 0},
+  {q: "'ಖಗ' ಪದದಲ್ಲಿರುವ ಮಹಾಪ್ರಾಣ ಅಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which is the Mahaprana letter in the word 'ಖಗ'?)</span>", options: ["ಖ", "ಗ", "ಎರಡೂ ಅಲ್ಲ"], answer: 0},
+  {q: "'ಘಟ' ಪದದಲ್ಲಿರುವ 'ಘ' ಅಕ್ಷರವು ಯಾವ ಗುಂಪಿಗೆ ಸೇರಿದೆ? <span class='translation'>(To which group does the letter 'ಘ' in the word 'ಘಟ' belong?)</span>", options: ["ಮಹಾಪ್ರಾಣ", "ಅಲ್ಪಪ್ರಾಣ", "ಅನುನಾಸಿಕ"], answer: 0},
+  {q: "'ನಮನ' ಪದದಲ್ಲಿರುವ ಎಲ್ಲಾ ವ್ಯಂಜನಗಳು ಯಾವ ಗುಂಪಿಗೆ ಸೇರಿವೆ? <span class='translation'>(All consonants in the word 'ನಮನ' belong to which group?)</span>", options: ["ಅನುನಾಸಿಕಗಳು", "ಮಹಾಪ್ರಾಣಗಳು", "ಅವರ್ಗೀಯಗಳು"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಅವರ್ಗೀಯ ವ್ಯಂಜನ ಅಲ್ಲ? <span class='translation'>(Which of the following is NOT an unstructured consonant?)</span>", options: ["ಪ", "ಯ", "ಶ"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>Question ${current + 1}: ${q.q}</b></p>`;
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3";
+    }
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3";
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
