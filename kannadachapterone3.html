@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kannada Grammar Challenge - Set 3</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #e8f5e9;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 550px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .score-board {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #a5d6a7;
+      background: #e8f5e9;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover:not([disabled]) {
+      background: #a5d6a7;
+    }
+    .translation {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📝 Kannada Grammar Quiz - Set 3</h2>
+<div class="score-board" id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "ಅನುಸ್ವಾರ ಚಿಹ್ನೆ (ಂ) ಹೊಂದಿರುವ ಅಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which letter contains the Anusvara symbol (ಂ)?)</span>", options: ["ಅಂ", "ಅಃ", "ಆ"], answer: 0},
+  {q: "ವಿಸರ್ಗ ಚಿಹ್ನೆ (ಃ) ಹೊಂದಿರುವ ಅಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which letter contains the Visarga symbol (ಃ)?)</span>", options: ["ಅಃ", "ಅಂ", "ಔ"], answer: 0},
+  {q: "ಬೇರೊಂದು ಅಕ್ಷರದ ಸಂಬಂಧದಿಂದ ಉಚ್ಚರಿಸಲ್ಪಡುವ ಅಕ್ಷರಗಳನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What are letters that are pronounced only in association with another letter called?)</span>", options: ["ಯೋಗವಾಹಗಳು", "ಸ್ವರಗಳು", "ಶುದ್ಧ ವ್ಯಂಜನಗಳು"], answer: 0},
+  {q: "ಒತ್ತಕ್ಷರಗಳಲ್ಲಿ ಒಟ್ಟು ಎಷ್ಟು ವಿಧಗಳಿವೆ? <span class='translation'>(How many types of conjunct consonant forms / Ottaksharagalu are there?)</span>", options: ["2", "3", "4"], answer: 0},
+  {q: "ಒಂದು ವ್ಯಂಜನಕ್ಕೆ ಅದೇ ವ್ಯಂಜನದ ಒತ್ತು ಬಂದರೆ ಅದನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What is it called when a consonant gets the same consonant's subscript form?)</span>", options: ["ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ (ಸಮರೂಪ)", "ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಗುಣಿತಾಕ್ಷರ"], answer: 0},
+  {q: "ಒಂದು ವ್ಯಂಜನಕ್ಕೆ ಬೇರೆ ವ್ಯಂಜನದ ಒತ್ತು ಬಂದರೆ ಅದನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What is it called when a consonant gets a different consonant's subscript form?)</span>", options: ["ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ (ಭಿನ್ನರೂಪ)", "ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಸಜಾತೀಯ (ಸಮರೂಪ) ಒತ್ತಕ್ಷರಕ್ಕೆ ಉದಾಹರಣೆ? <span class='translation'>(Which of the following is an example of a homogeneous / Sajatiya conjunct letter?)</span>", options: ["ಅಕ್ಕ", "ವಿದ್ಯೆ", "ಪುಸ್ತಕ"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ವಿಜಾತೀಯ (ಭಿನ್ನರೂಪ) ಒತ್ತಕ್ಷರವಿರುವ ಪದ ಯಾವುದು? <span class='translation'>(Which word contains a heterogeneous / Vijatiya conjunct letter?)</span>", options: ["ಸೂರ್ಯ", "ಅಮ್ಮ", "ಅಪ್ಪ"], answer: 0},
+  {q: "'ಅಮ್ಮ' ಪದದಲ್ಲಿರುವ 'ಮ್ಮ' ಯಾವ ಪ್ರಕಾರದ ಒತ್ತಕ್ಷರ? <span class='translation'>(What type of conjunct letter is 'ಮ್ಮ' in the word 'ಅಮ್ಮ'?)</span>", options: ["ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಯೋಗವಾಹ"], answer: 0},
+  {q: "'ಕಾವ್ಯ' ಪದದಲ್ಲಿರುವ 'ವ್ಯ' ಯಾವ ಪ್ರಕಾರದ ಒತ್ತಕ್ಷರ? <span class='translation'>(What type of conjunct letter is 'ವ್ಯ' in the word 'ಕಾವ್ಯ'?)</span>", options: ["ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಹ್ರಸ್ವಸ್ವರ"], answer: 0},
+  {q: "ಕೆಳಗಿನ ಚಿತ್ರಣದಲ್ಲಿ ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ ಇರುವ ಪದ ಗುರುತಿಸಿ: [ 🍎 ಬಸ್ಸು, 🍌 ಚಕ್ರ ] <span class='translation'>(Identify the word with a homogeneous conjunct letter from the visual options:)</span>", options: ["ಬಸ್ಸು", "ಚಕ್ರ", "ಎರಡೂ ಹೌದು"], answer: 0},
+  {q: "ಕೆಳಗಿನ ಚಿತ್ರಣದಲ್ಲಿ ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರವಿರುವ ಪದ ಗುರುತಿಸಿ: [ 🚗 ರತ್ನ, 🚲 ಕಣ್ಣು ] <span class='translation'>(Identify the word with a heterogeneous conjunct letter from the visual options:)</span>", options: ["ರತ್ನ", "ಕಣ್ಣು", "ಎರಡೂ ಹೌದು"], answer: 0},
+  {q: "'ಚಂದ್ರ' ಪದದಲ್ಲಿರುವ ಒತ್ತಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which is the conjunct letter form in the word 'ಚಂದ್ರ'?)</span>", options: ["ದ್ರ", "ಚಂ", "ನ"], answer: 0},
+  {q: "'ದ್ರ' ಎಂಬುದು ಯಾವ ರೀತಿಯ ಒತ್ತಕ್ಷರ? <span class='translation'>(What kind of conjunct letter is 'ದ್ರ'?)</span>", options: ["ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಸ್ವರ"], answer: 0},
+  {q: "'ಅಕ್ಕಿ' ಪದದಲ್ಲಿ ಯಾವ ಅಕ್ಷರದ ಒತ್ತು ಇದೆ? <span class='translation'>(Which letter's subscript/ottu is present in the word 'ಅಕ್ಕಿ'?)</span>", options: ["ಕ", "ಖ", "ಗ"], answer: 0},
+  {q: "'ರೊಟ್ಟಿ' ಪದದಲ್ಲಿರುವ ಒತ್ತಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which is the conjunct letter in the word 'ರೊಟ್ಟಿ'?)</span>", options: ["ಟ್ಟಿ", "ರೊ", "ಟಿ"], answer: 0},
+  {q: "'ರೊಟ್ಟಿ' ಪದದಲ್ಲಿರುವ 'ಟ್ಟಿ' ಯಾವ ಗುಂಪಿಗೆ ಸೇರಿದೆ? <span class='translation'>(To which group does 'ಟ್ಟಿ' in the word 'ರೊಟ್ಟಿ' belong?)</span>", options: ["ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಅಲ್ಪಪ್ರಾಣ"], answer: 0},
+  {q: "'ಭಕ್ತಿ' ಪದದಲ್ಲಿ ಯಾವ ವ್ಯಂಜನಕ್ಕೆ ಯಾವ ಒತ್ತು ಬಂದಿದೆ? <span class='translation'>(In the word 'ಭಕ್ತಿ', which consonant has received which subscript?)</span>", options: ["'ಕ' ಕ್ಕೆ 'ತ' ಒತ್ತು", "'ತ' ಕ್ಕೆ 'ಕ' ಒತ್ತು", "'ಭ' ಕ್ಕೆ 'ಕ' ಒತ್ತು"], answer: 0},
+  {q: "'ಸ್ವಾಮಿ' ಪದದಲ್ಲಿರುವ 'ಸ್ವಾ' ಯಾವ ರೀತಿಯ ಒತ್ತಕ್ಷರ? <span class='translation'>(What type of conjunct letter is 'ಸ್ವಾ' in the word 'ಸ್ವಾಮಿ'?)</span>", options: ["ವಿಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ಸಜಾತೀಯ ಒತ್ತಕ್ಷರ", "ದೀರ್ಘಸ್ವರ"], answer: 0},
+  {q: "ಒತ್ತಕ್ಷರವನ್ನು ಬರೆಯುವಾಗ ಮೂಲ ಅಕ್ಷರದ ಕೆಳಗೆ ಬರೆಯುವ ಚಿಹ್ನೆಯನ್ನು ಏನೆನ್ನುತ್ತಾರೆ? <span class='translation'>(What is the symbol written below the main letter called?)</span>", options: ["ಒತ್ತು / ಒತ್ತಕ್ಷರ ಚಿಹ್ನೆ", "ಗುಣಿತಾಕ್ಷರ", "ತಲೆಕಟ್ಟು"], answer: 0},
+  {q: "ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಯಾವುದು ಒತ್ತು ಚಿಹ್ನೆ ಪಡೆಯದ ಯೋಗವಾಹ? <span class='translation'>(Which of the following is a Yogavaha that does not take a subscript form?)</span>", options: ["ಅಂ", "ಕ್ಕ", "ಸ್ಥ"], answer: 0},
+  {q: "'ದುಃಖ' ಪದದಲ್ಲಿ ಬಳಕೆಯಾಗಿರುವ ಯೋಗವಾಹ ಯಾವುದು? <span class='translation'>(Which Yogavaha is used in the word 'ದುಃಖ'?)</span>", options: ["ವಿಸರ್ಗ (ಃ)", "ಅನುಸ್ವಾರ (ಂ)", "ಮಹಾಪ್ರಾಣ"], answer: 0},
+  {q: "'ಸಿಂಹ' ಪದದಲ್ಲಿ ಬಳಕೆಯಾಗಿರುವ ಯೋಗವಾಹ ಯಾವುದು? <span class='translation'>(Which Yogavaha is used in the word 'ಸಿಂಹ'?)</span>", options: ["ಅನುಸ್ವಾರ (ಂ)", "ವಿಸರ್ಗ (ಃ)", "ಅಲ್ಪಪ್ರಾಣ"], answer: 0},
+  {q: "ಯಾವ ಒತ್ತಕ್ಷರದಲ್ಲಿ ಮೂಲ ಅಕ್ಷರದ ರೂಪವೇ ಸಂಪೂರ್ಣ ಬದಲಾಗುತ್ತದೆ? <span class='translation'>(In which conjunct form does the shape of the subscript change completely from the original letter?)</span>", options: ["ತ (ತ್ಮ)", "ಕ (ಕ್ಕ)", "ಚ (ಚ್ಚ)"], answer: 0},
+  {q: "'ರತ್ನ' ಪದದಲ್ಲಿರುವ ಒತ್ತಕ್ಷರ ಯಾವುದು? <span class='translation'>(Which is the conjunct letter in the word 'ರತ್ನ'?)</span>", options: ["ತ್ನ", "ರ", "ತ್"], answer: 0}
+];
+
+let current = 0;
+let score = 0;
+let currentShuffledOptions = [];
+let correctTextForCurrentQuestion = "";
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Finished! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<p><b>Question ${current + 1}: ${q.q}</b></p>`;
+  currentShuffledOptions.forEach((opt, index) => {
+    html += `<button onclick="check(${index})">${opt}</button>`;
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    let btnText = currentShuffledOptions[idx];
+    if (btnText === correctTextForCurrentQuestion) {
+      btn.style.background = "#a8e6a3";
+    }
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) {
+      btn.style.background = "#ffb3b3";
+    }
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) {
+    score++;
+  }
+
+  document.getElementById("score").innerText = "Score: " + score;
+  setTimeout(() => {
+    current++;
+    loadQuestion();
+  }, 1500);
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
