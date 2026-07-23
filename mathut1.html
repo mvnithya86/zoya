@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mathematics Practice Quiz - Grade 3</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #cfe8f7; 
+      text-align: center; 
+      padding: 20px; 
+    }
+    .box { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 15px; 
+      max-width: 600px; 
+      margin: auto; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    }
+    .clue-text { 
+      font-size: 18px; 
+      color: #555; 
+      margin-bottom: 5px; 
+      font-weight: bold; 
+      text-transform: uppercase; 
+      letter-spacing: 1px; 
+    }
+    .target-word { 
+      font-size: 20px; 
+      font-weight: bold; 
+      color: #2c3e50; 
+      background: #e8f4f8; 
+      padding: 15px; 
+      border-radius: 8px; 
+      margin-bottom: 20px; 
+      line-height: 1.5; 
+      text-align: left;
+    }
+    button { 
+      display: block; 
+      width: 100%; 
+      margin: 8px 0; 
+      padding: 12px; 
+      border-radius: 10px; 
+      border: none; 
+      background: #fff4b3; 
+      font-size: 18px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      transition: background 0.2s; 
+    }
+    button:hover { 
+      background: #ffeaa7; 
+    }
+    #score { 
+      font-size: 20px; 
+      font-weight: bold; 
+      margin-bottom: 15px; 
+    }
+    #result { 
+      font-size: 24px; 
+      font-weight: bold; 
+      color: #27ae60; 
+      margin-top: 20px; 
+    }
+  </style>
+</head>
+<body>
+
+<h2>📐 Grade 3 Mathematics Practice Challenge 🧮</h2>
+<div id="score">Score: 0 / 12</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  // --- SECTION I: MULTIPLE CHOICE QUESTIONS ---
+  {
+    q: "Which of the following is an odd number?",
+    options: ["5,483", "4,832", "8,324", "2,834"],
+    answer: 0
+  },
+  {
+    q: "Rohan is trying to find a treasure box code. He knows that the code is a 4-digit number. The successor of this secret code is equal to the smallest 4-digit number. What is the secret code?",
+    options: ["999", "1,000", "1,001", "998"],
+    answer: 0
+  },
+  {
+    q: "Form the largest possible 4-digit even number using the digit cards: 1, 6, 2, and 9 (without repetition).",
+    options: ["9,612", "9,621", "9,216", "6,912"],
+    answer: 0
+  },
+  {
+    q: "Look at the balance expression: <strong>9,705 = 9,000 + N + 5</strong>.<br>What mystery number must <strong>N</strong> be to make both sides equal?",
+    options: ["700", "70", "7", "7,000"],
+    answer: 0
+  },
+  {
+    q: "Which equation demonstrates the Associative Property of Addition?",
+    options: [
+      "(1,500 + 2,400) + 3,100 = 1,500 + (2,400 + 3,100)",
+      "4,250 + 1,230 = 1,230 + 4,250",
+      "5,600 + 0 = 5,600",
+      "5,600 + 1 = 5,601"
+    ],
+    answer: 0
+  },
+
+  // --- SECTION II: COMPUTATION & WORD PROBLEMS ---
+  {
+    q: "Find the missing digits represented by symbols in this addition problem:<br><br><strong>2 🔷 4 + 4 1 🔶 = 6 9 9</strong>",
+    options: ["🔷 = 8, 🔶 = 5", "🔷 = 5, 🔶 = 8", "🔷 = 7, 🔶 = 5", "🔷 = 8, 🔶 = 6"],
+    answer: 0
+  },
+  {
+    q: "The hot air balloon was invented in 1783. Exactly 210 years later, the modern smartphone was introduced. In what year was the modern smartphone introduced?",
+    options: ["1993", "1983", "1973", "2003"],
+    answer: 0
+  },
+  {
+    q: "Consider these historic year milestones:<br>• Printing press: 1440<br>• Telephone: 1876<br>• Airplane: 1903<br>• First computer: 1941<br><br>Which option shows these years listed in <strong>ascending order</strong>?",
+    options: ["1440 < 1876 < 1903 < 1941", "1941 < 1903 < 1876 < 1440", "1440 < 1903 < 1876 < 1941", "1876 < 1440 < 1903 < 1941"],
+    answer: 0
+  },
+  {
+    q: "Ananya wrote the number <strong>471</strong> on her paper. She swapped the digit in the hundreds place with the digit in the ones place to make a new number. What is the sum of the original number and the new number?",
+    options: ["645", "574", "675", "846"],
+    answer: 0
+  },
+  {
+    q: "Solve using mental math shortcuts: <strong>40 + 38 + 12</strong>",
+    options: ["90", "80", "100", "85"],
+    answer: 0
+  },
+
+  // --- SECTION III: MULTI-STEP PROBLEMS ---
+  {
+    q: "Clues for a 4-digit mystery number:<br>• All digits are completely different.<br>• Thousands digit is the smallest odd prime number (3).<br>• Hundreds digit is 4.<br>• Tens digit is 0.<br>• Sum of all four digits is 12.<br><br>What is the mystery number?",
+    options: ["3405", "3401", "3409", "3402"],
+    answer: 0
+  },
+  {
+    q: "A bakery baked cookies for a school festival:<br>• Monday: 1,200 cookies<br>• Tuesday: 300 more cookies than Monday<br>• Wednesday: 150 more cookies than Tuesday<br><br>How many total cookies were baked across all three days?",
+    options: ["4,350 cookies", "3,150 cookies", "4,200 cookies", "3,850 cookies"],
+    answer: 0
+  }
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Test Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { 
+    html += `<button onclick="check(${index})">${opt}</button>`; 
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { 
+    score++; 
+    correctSound.play().catch(e => {}); 
+  } else { 
+    wrongSound.play().catch(e => {}); 
+  }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { 
+    current++; 
+    loadQuestion(); 
+  }, 1500);
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
