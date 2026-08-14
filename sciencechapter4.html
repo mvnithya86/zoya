@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4 Quiz - Common Insects</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #fdf6ec; text-align: center; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .clue-text { font-size: 18px; color: #555; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .target-word { font-size: 20px; font-weight: bold; color: #2c3e50; background: #fef5e7; padding: 15px; border-radius: 8px; margin-bottom: 20px; line-height: 1.5; }
+    button { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 10px; border: none; background: #ffe3c2; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #ffd4a3; }
+    #score { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    #result { font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>🐜 Chapter 4: Common Insects Quiz</h2>
+<div id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "How many main body parts does an insect body have?", options: ["Three", "Two", "Four", "Six"], answer: 0},
+  {q: "All adult insects have how many legs?", options: ["Six", "Four", "Eight", "Ten"], answer: 0},
+  {q: "Feelers present on the head of an insect are called:", options: ["Antennae", "Wings", "Flippers", "Tentacles"], answer: 0},
+  {q: "Antennae help insects to:", options: ["Smell, feel, and taste", "Walk and jump", "Fly long distances", "Digest food"], answer: 0},
+  {q: "The three main parts of an insect body are head, thorax, and:", options: ["Abdomen", "Tail", "Trunk", "Chest"], answer: 0},
+  {q: "Insects breathe through tiny air holes on their body called:", options: ["Spiracles", "Gills", "Stomata", "Lungs"], answer: 0},
+  {q: "Which of the following is NOT an insect?", options: ["Spider", "Butterfly", "Honeybee", "Ant"], answer: 0},
+  {q: "The larva stage of a butterfly that hatches from an egg is called a:", options: ["Caterpillar", "Nymph", "Pupa", "Maggot"], answer: 0},
+  {q: "The resting stage in the life cycle of a butterfly is called the:", options: ["Pupa", "Larva", "Egg", "Adult"], answer: 0},
+  {q: "The larva of a housefly is called a:", options: ["Maggot", "Caterpillar", "Nymph", "Tadpole"], answer: 0},
+  {q: "Which insect gives us sweet honey and beeswax?", options: ["Honeybee", "Silkworm", "Dragonfly", "Mosquito"], answer: 0},
+  {q: "Fine silk threads are obtained from the cocoon of a:", options: ["Silkworm", "Honeybee", "Butterfly", "Grasshopper"], answer: 0},
+  {q: "Insects like ants and honeybees live together in organized groups called:", options: ["Colonies", "Fleets", "Packs", "Herds"], answer: 0},
+  {q: "Female mosquitoes spread malaria by sucking:", options: ["Blood", "Plant sap", "Water", "Nectar"], answer: 0},
+  {q: "Houseflies spread diseases by carrying germs on their:", options: ["Hairy legs and body", "Wings", "Eyes", "Antennae"], answer: 0},
+  {q: "Which harmful insect destroys wooden furniture and buildings?", options: ["Termite", "Ladybug", "Firefly", "Cricket"], answer: 0},
+  {q: "Ladybugs are useful to farmers because they:", options: ["Eat harmful plant pests", "Make honey", "Spin silk", "Eat crop leaves"], answer: 0},
+  {q: "The process where an insect sheds its old skin as it grows is called:", options: ["Molting", "Digestion", "Hibernation", "Reproduction"], answer: 0},
+  {q: "The complete change from larva to adult insect is known as:", options: ["Metamorphosis", "Respiration", "Circulation", "Photosynthesis"], answer: 0},
+  {q: "Fireflies (glow-worms) produce light from their body through:", options: ["Bioluminescence (chemical reaction)", "Electricity", "Heat", "Sunlight"], answer: 0},
+  {q: "Which insect uses its long, powerful hind legs to hop and leap?", options: ["Grasshopper", "Cockroach", "Bedbug", "Louse"], answer: 0},
+  {q: "Instead of internal bones, insects have a hard outer shell called an:", options: ["Exoskeleton", "Endoskeleton", "Shell", "Spine"], answer: 0},
+  {q: "Which of the following is a wingless bug that bites humans at night?", options: ["Bedbug", "Butterfly", "Honeybee", "Dragonfly"], answer: 0},
+  {q: "Butterflies suck nectar from flowers using a long coiled mouth tube called a:", options: ["Proboscis", "Beak", "Fang", "Trunk"], answer: 0},
+  {q: "Ants leave trail marks for other ants using special chemicals called:", options: ["Pheromones", "Hormones", "Enzymes", "Toxins"], answer: 0}
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Quiz Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { html += `<button onclick="check(${index})">${opt}</button>`; });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { score++; correctSound.play().catch(e => {}); }
+  else { wrongSound.play().catch(e => {}); }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { current++; loadQuestion(); }, 1500);
+}
+loadQuestion();
+</script>
+</body>
+</html>
