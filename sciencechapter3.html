@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 Quiz - Animals: Birds</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #cfe8f7; text-align: center; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .clue-text { font-size: 18px; color: #555; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .target-word { font-size: 20px; font-weight: bold; color: #2c3e50; background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; line-height: 1.5; }
+    button { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 10px; border: none; background: #fff4b3; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #ffeaa7; }
+    #score { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    #result { font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>🦅 Chapter 3: Animals - Birds Quiz</h2>
+<div id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "Birds are the only animals that have:", options: ["Feathers", "Scales", "Fur", "Fins"], answer: 0},
+  {q: "Which type of beak does a sparrow have to crush seeds?", options: ["Short, hard, and pointed", "Broad and flat", "Hooked", "Chisel-shaped"], answer: 0},
+  {q: "Eagles and hawks have strong, sharp, curved beaks called:", options: ["Hooked beaks", "Chisel beaks", "Flat beaks", "Slender beaks"], answer: 0},
+  {q: "A woodpecker uses its sharp, chisel-shaped beak to:", options: ["Make holes in tree trunks", "Scoop fish", "Suck nectar", "Crack nuts"], answer: 0},
+  {q: "Ducks have broad and flat beaks with tiny holes on the sides to:", options: ["Filter mud and water", "Catch flying insects", "Tear flesh", "Crack seeds"], answer: 0},
+  {q: "Which bird uses its long, slender beak to suck nectar from flowers?", options: ["Sunbird", "Parrot", "Owl", "Duck"], answer: 0},
+  {q: "Feathers that cover the body and give shape to a bird are called:", options: ["Body feathers", "Down feathers", "Flight feathers", "Tail feathers"], answer: 0},
+  {q: "Soft, fluffy feathers located close to the skin that keep the bird warm are:", options: ["Down feathers", "Flight feathers", "Body feathers", "Quill feathers"], answer: 0},
+  {q: "Feathers found on wings and tail that help in flying are:", options: ["Flight feathers", "Down feathers", "Soft feathers", "Warm feathers"], answer: 0},
+  {q: "Birds that cannot fly but can run fast or swim are called:", options: ["Flightless birds", "Perching birds", "Birds of prey", "Wading birds"], answer: 0},
+  {q: "Which of the following is a flightless bird?", options: ["Ostrich", "Crow", "Pigeon", "Eagle"], answer: 0},
+  {q: "Ducks and swans have webbed feet which help them to:", options: ["Swim in water", "Climb trees", "Catch prey", "Walk on sand"], answer: 0},
+  {q: "Birds like crows and sparrows hold onto tree branches securely using their toes. This is called:", options: ["Perching", "Climbing", "Wading", "Swimming"], answer: 0},
+  {q: "Flesh-eating birds like eagles and owls have sharp, curved claws called:", options: ["Talons", "Webbed toes", "Spurs", "Hooves"], answer: 0},
+  {q: "A woodpecker has two toes pointing forward and two pointing backward to help it:", options: ["Climb tree trunks", "Swim", "Run on ground", "Catch fish"], answer: 0},
+  {q: "Herons and cranes walk through shallow water. They are known as:", options: ["Wading birds", "Climbing birds", "Swimming birds", "Flightless birds"], answer: 0},
+  {q: "Which bird weaves grass and twigs together to build a delicate woven nest?", options: ["Weaver bird", "Tailor bird", "Woodpecker", "Penguin"], answer: 0},
+  {q: "A tailor bird uses its beak like a needle to sew leaves together using:", options: ["Thread, cotton, and spider webs", "Mud", "Stones", "Ice"], answer: 0},
+  {q: "Penguins build their nests on the ground using:", options: ["Pebbles and stones", "Leaves", "Twigs and grass", "Cotton"], answer: 0},
+  {q: "The body of a bird is shaped like a _________ to cut through air easily.", options: ["Boat", "Circle", "Square", "Cube"], answer: 0},
+  {q: "Birds have light body weights because their bones are:", options: ["Hollow", "Solid", "Heavy", "Soft"], answer: 0},
+  {q: "Strong muscles attached to the wings and breastbone that power flight are called:", options: ["Flight muscles", "Leg muscles", "Arm muscles", "Tail muscles"], answer: 0},
+  {q: "The upward and backward movement of wings during flight is called:", options: ["Upstroke", "Downstroke", "Flap", "Glide"], answer: 0},
+  {q: "The downward and forward movement of wings during flight is called:", options: ["Downstroke", "Upstroke", "Soar", "Hover"], answer: 0},
+  {q: "A parrot uses its strong, hooked beak to:", options: ["Crack nuts and hard seeds", "Tear flesh", "Filter mud", "Catch fish"], answer: 0}
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Quiz Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { html += `<button onclick="check(${index})">${opt}</button>`; });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { score++; correctSound.play().catch(e => {}); }
+  else { wrongSound.play().catch(e => {}); }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { current++; loadQuestion(); }, 1500);
+}
+loadQuestion();
+</script>
+</body>
+</html>
