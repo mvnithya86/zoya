@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verbs Mastery Challenge</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #cfe8f7; text-align: center; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .clue-text { font-size: 18px; color: #555; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .target-word { font-size: 20px; font-weight: bold; color: #2c3e50; background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; line-height: 1.5; }
+    button { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 10px; border: none; background: #fff4b3; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #ffeaa7; }
+    #score { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    #result { font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>📝 Verbs Mastery Quiz (Action, Linking, Helping & Transitive/Intransitive)</h2>
+<div id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  // --- SECTION A: ACTION VERBS (1-10) ---
+  {q: "Aria ________ up the spiral steps.", options: ["climbed", "chirped", "fixed"], answer: 0},
+  {q: "Buddy ________ behind the curtain.", options: ["sniffed", "solved", "cheered"], answer: 0},
+  {q: "The bird ________ loudly at Aria.", options: ["chirped", "walked", "climb"], answer: 0},
+  {q: "Aria ________ the glowing door.", options: ["found", "wagged", "ticked"], answer: 0},
+  {q: "Buddy ________ his tail happily.", options: ["wagged", "solved", "fixed"], answer: 0},
+  {q: "Mr. Tocklin ________ the broken clock.", options: ["fixed", "climbed", "sniffed"], answer: 0},
+  {q: "Aria ________ the riddle with ease.", options: ["solved", "cheered", "ticked"], answer: 0},
+  {q: "The tower ________ again at sunset.", options: ["ticked", "found", "climbed"], answer: 0},
+  {q: "People ________ for Aria and Buddy.", options: ["cheered", "sniffed", "solved"], answer: 0},
+  {q: "The bird ________ its wings.", options: ["flapped", "ticked", "found"], answer: 0},
+
+  // --- SECTION B: LINKING VERBS (11-20) ---
+  {q: "The tower ________ very old.", options: ["is", "am", "are"], answer: 0},
+  {q: "Aria ________ excited to help.", options: ["was", "were", "am"], answer: 0},
+  {q: "Buddy ________ curious about the bird.", options: ["is", "am", "were"], answer: 0},
+  {q: "The door ________ glowing faintly.", options: ["was", "were", "am"], answer: 0},
+  {q: "Mr. Tocklin ________ grateful to Aria.", options: ["was", "are", "were"], answer: 0},
+  {q: "The gears ________ rusty.", options: ["were", "was", "is"], answer: 0},
+  {q: "The bird ________ clever.", options: ["was", "were", "am"], answer: 0},
+  {q: "The townspeople ________ worried.", options: ["were", "is", "was"], answer: 0},
+  {q: "The Heart-Gear ________ missing.", options: ["was", "were", "are"], answer: 0},
+  {q: "The tower bells ________ loud again.", options: ["are", "is", "was"], answer: 0},
+
+  // --- SECTION C: MAIN & HELPING VERBS (21-30) ---
+  {q: "Aria ________ up the steps.", options: ["is climbing", "was looking", "are guarding"], answer: 0},
+  {q: "Buddy ________ sniffing the floor.", options: ["is", "were", "are"], answer: 0},
+  {q: "Mr. Tocklin is ________ for the gear.", options: ["looking", "climbing", "guarding"], answer: 0},
+  {q: "The owl is ________ the door.", options: ["guarding", "shining", "climbing"], answer: 0},
+  {q: "They ________ working together.", options: ["are", "is", "was"], answer: 0},
+  {q: "Aria ________ going to solve the riddle.", options: ["is", "were", "are"], answer: 0},
+  {q: "The gear was ________ brightly.", options: ["shining", "climbing", "looking"], answer: 0},
+  {q: "People ________ cheering outside.", options: ["were", "is", "was"], answer: 0},
+  {q: "Aria was ________ Mr. Tocklin.", options: ["helping", "shining", "looking"], answer: 0},
+  {q: "The tower bell ________ ringing loudly.", options: ["was", "were", "are"], answer: 0},
+
+  // --- SECTION D: TRANSITIVE & INTRANSITIVE VERBS (31-40) ---
+  {q: "Identify the verb type: Aria found the small door.", options: ["Transitive Verb", "Intransitive Verb"], answer: 0},
+  {q: "Identify the verb type: The bird whirred softly.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0},
+  {q: "Identify the verb type: Buddy barked loudly.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0},
+  {q: "Identify the verb type: Aria solved the riddle.", options: ["Transitive Verb", "Intransitive Verb"], answer: 0},
+  {q: "Identify the verb type: The tower chimed at noon.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0},
+  {q: "Identify the verb type: People cheered happily.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0},
+  {q: "Identify the verb type: Mr. Tocklin fixed the clock.", options: ["Transitive Verb", "Intransitive Verb"], answer: 0},
+  {q: "Identify the verb type: The gears moved slowly.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0},
+  {q: "Identify the verb type: Aria touched the Heart-Gear.", options: ["Transitive Verb", "Intransitive Verb"], answer: 0},
+  {q: "Identify the verb type: Buddy jumped.", options: ["Intransitive Verb", "Transitive Verb"], answer: 0}
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Quiz Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { html += `<button onclick="check(${index})">${opt}</button>`; });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { score++; correctSound.play().catch(e => {}); }
+  else { wrongSound.play().catch(e => {}); }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { current++; loadQuestion(); }, 1500);
+}
+loadQuestion();
+</script>
+</body>
+</html>
