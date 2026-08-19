@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 3 Mathematics: Mixed Word Problems Quiz</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --correct: #16a34a;
+            --correct-bg: #dcfce7;
+            --incorrect: #dc2626;
+            --incorrect-bg: #fee2e2;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        header {
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+        }
+
+        .question-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background: white;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .option-btn.selected-correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct);
+            color: var(--correct);
+            font-weight: 700;
+        }
+
+        .option-btn.selected-incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect);
+            color: var(--incorrect);
+            font-weight: 700;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .score-modal {
+            text-align: center;
+            padding: 20px 0;
+            display: none;
+        }
+
+        .score-modal h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .score-modal p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 auto 25px auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <header>
+        <h1>Grade 3 Mathematics Quiz</h1>
+        <p class="subtitle">Mixed Word Problems Practice (68 Questions)</p>
+    </header>
+
+    <div id="quizContent">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="stats-bar">
+            <span id="questionCount">Question 1 of 68</span>
+            <span id="scoreTracker">Score: 0</span>
+        </div>
+
+        <div class="question-card">
+            <span class="question-tag" id="questionTag">Word Problem</span>
+            <div class="question-text" id="questionText">Loading...</div>
+            <div class="options-grid" id="optionsGrid"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+        </div>
+    </div>
+
+    <div class="score-modal" id="scoreModal">
+        <h2>Quiz Completed!</h2>
+        <div class="score-circle" id="finalScore">0%</div>
+        <p id="scoreDetails">You answered 0 out of 68 questions correctly.</p>
+        <button class="btn" onclick="restartQuiz()">Try Again</button>
+    </div>
+</div>
+
+<script>
+    const allQuestions = [
+        {
+            question: "A school canteen sold 1,076 cupcakes on Monday, 791 cupcakes on Tuesday, and 3,125 cupcakes on Wednesday. How many cupcakes were sold in total?",
+            options: ["4,892", "4,992", "5,092", "4,982"],
+            correct: 1,
+            explanation: "Total cupcakes = 1,076 + 791 + 3,125 = 4,992."
+        },
+        {
+            question: "What should be subtracted from 10,000 to get 6,750?",
+            options: ["3,250", "3,350", "4,250", "3,150"],
+            correct: 0,
+            explanation: "Required number = 10,000 - 6,750 = 3,250."
+        },
+        {
+            question: "The cost of one book is ₹456. Find the cost of 12 such books.",
+            options: ["₹5,372", "₹5,472", "₹5,572", "₹5,462"],
+            correct: 1,
+            explanation: "Total cost = ₹456 × 12 = ₹5,472."
+        },
+        {
+            question: "Aman bought 20 candies and shared them equally among his 6 friends. How many candies did each friend receive, and how many were left?",
+            options: ["3 candies each, 2 left", "3 candies each, 1 left", "4 candies each, 0 left", "2 candies each, 8 left"],
+            correct: 0,
+            explanation: "20 ÷ 6 gives Quotient = 3 and Remainder = 2."
+        },
+        {
+            question: "On Shreya's birthday, her mother bought a gift for ₹3,500. Her father bought a cake for ₹1,250 and balloons for ₹250. Find the total amount spent on Shreya's birthday.",
+            options: ["₹4,800", "₹5,000", "₹5,250", "₹4,900"],
+            correct: 1,
+            explanation: "Total spent = ₹3,500 + ₹1,250 + ₹250 = ₹5,000."
+        },
+        {
+            question: "What should be added to 3,456 to get 5,000?",
+            options: ["1,444", "1,544", "1,644", "1,554"],
+            correct: 1,
+            explanation: "Required number = 5,000 - 3,456 = 1,544."
+        },
+        {
+            question: "The mobile charge for a month is ₹269. What will be the mobile charge for 12 months?",
+            options: ["₹3,128", "₹3,228", "₹3,328", "₹3,218"],
+            correct: 1,
+            explanation: "Total charge = ₹269 × 12 = ₹3,228."
+        },
+        {
+            question: "In a farm, there were 4,500 mango trees, 2,000 coconut trees, and 1,500 apple trees. Find the total number of trees in the farm.",
+            options: ["7,500", "8,000", "8,500", "7,000"],
+            correct: 1,
+            explanation: "Total trees = 4,500 + 2,000 + 1,500 = 8,000."
+        },
+        {
+            question: "Raman bought a watch for ₹6,700 and Ramesh bought a watch for ₹7,550. What is the difference in the costs of the watches?",
+            options: ["₹750", "₹850", "₹950", "₹800"],
+            correct: 1,
+            explanation: "Difference = ₹7,550 - ₹6,700 = ₹850."
+        },
+        {
+            question: "In a library, there are 94 books on one shelf. How many books are there on 45 shelves?",
+            options: ["4,130", "4,230", "4,330", "4,220"],
+            correct: 1,
+            explanation: "Total books = 94 × 45 = 4,230."
+        },
+        {
+            question: "There are 1,760 passengers flying to London. The number of passengers flying to New York is 125 more than the number of passengers flying to London. How many passengers are flying to New York?",
+            options: ["1,885", "1,875", "1,895", "1,785"],
+            correct: 0,
+            explanation: "Passengers to New York = 1,760 + 125 = 1,885."
+        },
+        {
+            question: "5,280 students wrote an exam. 3,545 students passed the exam. How many students did not pass?",
+            options: ["1,735", "1,745", "1,635", "1,835"],
+            correct: 0,
+            explanation: "Students who did not pass = 5,280 - 3,545 = 1,735."
+        },
+        {
+            question: "Multiply the smallest three-digit number by the largest two-digit number.",
+            options: ["9,900", "9,000", "9,990", "1,000"],
+            correct: 0,
+            explanation: "Smallest 3-digit number = 100. Largest 2-digit number = 99. Product = 100 × 99 = 9,900."
+        },
+        {
+            question: "In a school library, there are 3,258 story books, 1,220 puzzle books, and 2,200 comic books. Find the total number of books in the library.",
+            options: ["6,578", "6,678", "6,778", "6,478"],
+            correct: 1,
+            explanation: "Total books = 3,258 + 1,220 + 2,200 = 6,678."
+        },
+        {
+            question: "A fruit wholesale market had 5,678 apples. They sold 4,122 apples. How many apples were left?",
+            options: ["1,456", "1,556", "1,656", "1,546"],
+            correct: 1,
+            explanation: "Apples left = 5,678 - 4,122 = 1,556."
+        },
+        {
+            question: "A baker earns ₹980 per day. Find the amount he earns in a week (7 days).",
+            options: ["₹6,760", "₹6,860", "₹6,960", "₹6,850"],
+            correct: 1,
+            explanation: "Total earnings = ₹980 × 7 = ₹6,860."
+        },
+        {
+            question: "On a highway toll plaza, 4,356 FASTag enabled vehicles passed in the morning and 4,544 vehicles passed in the evening. How many FASTag vehicles passed through the toll plaza in total that day?",
+            options: ["8,800", "8,900", "9,000", "8,950"],
+            correct: 1,
+            explanation: "Total vehicles = 4,356 + 4,544 = 8,900."
+        },
+        {
+            question: "A school has 6,666 students. There are 4,578 boys. Find the number of girls in the school.",
+            options: ["2,088", "2,188", "2,078", "1,988"],
+            correct: 0,
+            explanation: "Number of girls = 6,666 - 4,578 = 2,088."
+        },
+        {
+            question: "A publisher packs 124 books in one box. If there are 42 such boxes, how many books are there in total?",
+            options: ["5,108", "5,208", "5,308", "5,218"],
+            correct: 1,
+            explanation: "Total books = 124 × 42 = 5,208."
+        },
+        {
+            question: "A gaming app was downloaded 3,684 times in Asia and 4,444 times in Europe. What is the total number of downloads in both Asia and Europe?",
+            options: ["8,128", "8,028", "8,228", "8,118"],
+            correct: 0,
+            explanation: "Total downloads = 3,684 + 4,444 = 8,128."
+        },
+        {
+            question: "The sum of two numbers is 6,732. If one number is 5,432, find the other number.",
+            options: ["1,200", "1,300", "1,400", "1,310"],
+            correct: 1,
+            explanation: "Other number = 6,732 - 5,432 = 1,300."
+        },
+        {
+            question: "One school bus can carry 132 students. If 15 buses are used for a field trip, how many students can go?",
+            options: ["1,980", "1,880", "2,080", "1,970"],
+            correct: 0,
+            explanation: "Total students = 132 × 15 = 1,980."
+        },
+        {
+            question: "2,565 children and 4,343 adults attended a music show. How many people attended the show in total?",
+            options: ["6,808", "6,908", "7,008", "6,918"],
+            correct: 1,
+            explanation: "Total people = 2,565 + 4,343 = 6,908."
+        },
+        {
+            question: "A truck carried 5,000 water cans. It delivered 4,125 cans. How many cans are still on the truck?",
+            options: ["775", "875", "975", "825"],
+            correct: 1,
+            explanation: "Cans left = 5,000 - 4,125 = 875."
+        },
+        {
+            question: "A factory produces 218 juice bottles in one hour. How many bottles does it produce in 3 hours?",
+            options: ["644", "654", "664", "650"],
+            correct: 1,
+            explanation: "Total bottles = 218 × 3 = 654."
+        },
+        {
+            question: "A school sent 2,204 emails during the first month and 1,456 emails during the second month. Find the total emails sent during the two months.",
+            options: ["3,560", "3,660", "3,760", "3,650"],
+            correct: 1,
+            explanation: "Total emails = 2,204 + 1,456 = 3,660."
+        },
+        {
+            question: "A class had to collect an amount of ₹16,500 for the welfare of needy children. They have collected ₹4,850. How much more do they need to collect?",
+            options: ["₹11,650", "₹11,550", "₹11,750", "₹12,650"],
+            correct: 0,
+            explanation: "Remaining amount = ₹16,500 - ₹4,850 = ₹11,650."
+        },
+        {
+            question: "A warehouse stores 175 basketballs on one shelf. If there are 25 such shelves, how many basketballs are stored in total?",
+            options: ["4,275", "4,375", "4,475", "4,365"],
+            correct: 1,
+            explanation: "Total basketballs = 175 × 25 = 4,375."
+        },
+        {
+            question: "Students of a class tossed a coin as a part of an experiment. They tossed 4,357 heads and 3,643 tails. How many times did they toss the coin in all?",
+            options: ["7,900", "8,000", "8,100", "8,050"],
+            correct: 1,
+            explanation: "Total tosses = 4,357 + 3,643 = 8,000."
+        },
+        {
+            question: "A factory produced 8,750 toys in a month. Out of them, 2,489 were sold. How many toys are left in the factory?",
+            options: ["6,261", "6,361", "6,161", "6,251"],
+            correct: 0,
+            explanation: "Toys left = 8,750 - 2,489 = 6,261."
+        },
+        {
+            question: "Each school has 243 computers. If 7 schools have the same number, how many computers are there altogether?",
+            options: ["1,601", "1,701", "1,801", "1,711"],
+            correct: 1,
+            explanation: "Total computers = 243 × 7 = 1,701."
+        },
+        {
+            question: "A water tank supplied 2,876 litres of water on Monday and 3,204 litres of water on Tuesday. How much water was supplied in two days?",
+            options: ["6,080 litres", "6,180 litres", "5,980 litres", "6,070 litres"],
+            correct: 0,
+            explanation: "Total water = 2,876 + 3,204 = 6,080 litres."
+        },
+        {
+            question: "A bookstore had 6,420 books. After a sale, 1,865 books were sold. How many books are left in the bookstore?",
+            options: ["4,455", "4,555", "4,655", "4,545"],
+            correct: 1,
+            explanation: "Books left = 6,420 - 1,865 = 4,555."
+        },
+        {
+            question: "Anna bought 3 Christmas presents for her family. If each present costs ₹125, find the total money spent by Anna.",
+            options: ["₹350", "₹375", "₹400", "₹365"],
+            correct: 1,
+            explanation: "Total cost = 3 × ₹125 = ₹375."
+        },
+        {
+            question: "1,937 students participated in a sports competition, and 2,584 students participated in a cultural competition. Find the total number of students who participated in both the competitions.",
+            options: ["4,421", "4,521", "4,621", "4,511"],
+            correct: 1,
+            explanation: "Total students = 1,937 + 2,584 = 4,521."
+        },
+        {
+            question: "A farmer harvested 6,820 kg of wheat. He sold 3,415 kg. How much wheat does he still have?",
+            options: ["3,305 kg", "3,405 kg", "3,505 kg", "3,415 kg"],
+            correct: 1,
+            explanation: "Wheat left = 6,820 - 3,415 = 3,405 kg."
+        },
+        {
+            question: "A sweets shop sold 200 laddoos in the morning and 37 more than that in the evening. If each laddoo costs ₹18, what was the total cost of all laddoos sold that day?",
+            options: ["₹7,766", "₹7,866", "₹7,966", "₹7,856"],
+            correct: 1,
+            explanation: "Morning = 200, Evening = 237. Total laddoos = 437. Total cost = 437 × ₹18 = ₹7,866."
+        },
+        {
+            question: "4,782 tourists visited a hill station in winter, and 3,396 tourists visited in summer. What is the total number of tourists visiting the hill station?",
+            options: ["8,178", "8,078", "8,278", "8,168"],
+            correct: 0,
+            explanation: "Total tourists = 4,782 + 3,396 = 8,178."
+        },
+        {
+            question: "A plane travels from Delhi to Pune covering an aerial distance of 1,173 km. If the total aerial distance to be covered was 2,085 km, how much more distance remains to be covered?",
+            options: ["912 km", "902 km", "922 km", "812 km"],
+            correct: 0,
+            explanation: "Remaining distance = 2,085 - 1,173 = 912 km."
+        },
+        {
+            question: "It takes 2 hours to read a comic book. How many hours does it take to read 79 such comic books?",
+            options: ["120 hours", "118 hours", "158 hours", "128 hours"],
+            correct: 2,
+            explanation: "Total time = 79 × 2 = 158 hours."
+        },
+        {
+            question: "A family spent ₹5,220 in March and ₹4,350 in April, on fruits. What was the total amount spent on fruits over these two months?",
+            options: ["₹9,470", "₹9,570", "₹9,670", "₹9,520"],
+            correct: 1,
+            explanation: "Total spent = ₹5,220 + ₹4,350 = ₹9,570."
+        },
+        {
+            question: "There were 5,903 apples in a store. 2,356 apples were sold in one day. How many apples remained?",
+            options: ["3,447", "3,547", "3,647", "3,557"],
+            correct: 1,
+            explanation: "Apples remaining = 5,903 - 2,356 = 3,547."
+        },
+        {
+            question: "A game has two teams. Each team must have 11 players. How many players are required to play the game?",
+            options: ["21", "22", "33", "20"],
+            correct: 1,
+            explanation: "Total players = 2 × 11 = 22."
+        },
+        {
+            question: "The river Ganga flows for 2,525 kilometres in India. The river Yamuna flows for 1,376 kilometres. What is the total length of land covered by both the rivers?",
+            options: ["3,901 km", "3,801 km", "4,001 km", "3,911 km"],
+            correct: 0,
+            explanation: "Total length = 2,525 + 1,376 = 3,901 km."
+        },
+        {
+            question: "A tree plantation NGO planted 2,350 saplings in one park and 1,275 saplings in another. Due to a storm, 1,180 saplings got damaged. How many healthy saplings are left?",
+            options: ["2,445", "2,345", "2,545", "2,435"],
+            correct: 0,
+            explanation: "Healthy saplings = (2,350 + 1,275) - 1,180 = 3,625 - 1,180 = 2,445."
+        },
+        {
+            question: "A bus can accommodate 62 passengers. All seats except two were filled. If each ticket costs ₹9 per head, how much money did the conductor collect?",
+            options: ["₹600", "₹558", "₹560", "₹540"],
+            correct: 3,
+            explanation: "Passengers filled = 62 - 2 = 60. Total money = 60 × ₹9 = ₹540."
+        },
+        {
+            question: "During heavy floods in a region, food was distributed to 3,565 children on the first day, 3,440 children on the second day, and 2,670 children on the third day. Find the total number of children helped.",
+            options: ["9,575", "9,675", "9,775", "9,665"],
+            correct: 1,
+            explanation: "Total children = 3,565 + 3,440 + 2,670 = 9,675."
+        },
+        {
+            question: "A school planned an event where 2,150 students from Grades 1 to 5 and 1,840 students from Grades 6 to 10 participated. 1,225 students left early. How many stayed until the end?",
+            options: ["2,665", "2,765", "2,865", "2,755"],
+            correct: 1,
+            explanation: "Students who stayed = (2,150 + 1,840) - 1,225 = 3,990 - 1,225 = 2,765."
+        },
+        {
+            question: "Volunteers collected 3,240 kg of waste from a beach and 1,560 kg from a park. 1,480 kg was sent for recycling. How much waste is still left to dispose of?",
+            options: ["3,220 kg", "3,320 kg", "3,420 kg", "3,310 kg"],
+            correct: 1,
+            explanation: "Waste left = (3,240 + 1,560) - 1,480 = 4,800 - 1,480 = 3,320 kg."
+        },
+        {
+            question: "A balloon seller sold 400 balloons today. Each balloon costs ₹15. How much money did he earn today?",
+            options: ["₹1,905", "₹3,750", "₹6,000", "₹2,250"],
+            correct: 2,
+            explanation: "Total earnings = 400 × ₹15 = ₹6,000."
+        },
+        {
+            question: "A library had 4,250 books. 1,180 old books were removed and 1,375 new books were added. How many books are in the library now?",
+            options: ["4,345", "4,445", "4,545", "4,435"],
+            correct: 1,
+            explanation: "Current books = (4,250 - 1,180) + 1,375 = 3,070 + 1,375 = 4,445."
+        },
+        {
+            question: "On Sunday, 3,247 men, 2,478 women, and 2,456 children visited a zoo. How many people visited the zoo on Sunday?",
+            options: ["8,081", "8,181", "8,281", "8,171"],
+            correct: 1,
+            explanation: "Total people = 3,247 + 2,478 + 2,456 = 8,181."
+        },
+        {
+            question: "A space agency launched 3,350 satellites. 1,185 were deactivated. This year, they launched 1,420 new satellites. How many satellites are active now?",
+            options: ["3,485", "3,585", "3,685", "3,575"],
+            correct: 1,
+            explanation: "Active satellites = (3,350 - 1,185) + 1,420 = 2,165 + 1,420 = 3,585."
+        },
+        {
+            question: "Sravan catches 82 fish. Karan catches thrice as many fish as Sravan. How many fish does Karan catch?",
+            options: ["23", "246", "82", "164"],
+            correct: 1,
+            explanation: "Fish caught by Karan = 82 × 3 = 246."
+        },
+        {
+            question: "A toy shop had 4,569 ceramic toys. It sold 3,576 ceramic toys last month. How many ceramic toys are left in the shop?",
+            options: ["983", "993", "1,003", "973"],
+            correct: 1,
+            explanation: "Toys left = 4,569 - 3,576 = 993."
+        },
+        {
+            question: "In a mall, there was a magic show. At first, 3,219 tickets were sold and then 19 more tickets were sold. How many tickets were sold in total?",
+            options: ["3,238", "3,278", "3,242", "3,283"],
+            correct: 0,
+            explanation: "Total tickets = 3,219 + 19 = 3,238."
+        },
+        {
+            question: "Among 2,733 birds that came to Suchi's water spot this week, 989 came today. How many came during the rest of the week?",
+            options: ["1,744", "1,754", "1,644", "1,844"],
+            correct: 0,
+            explanation: "Birds during rest of week = 2,733 - 989 = 1,744."
+        },
+        {
+            question: "It rained for 15 minutes in each of the six villages where Syed and his friends live. Find the total number of minutes it rained across all six villages.",
+            options: ["630", "105", "45", "90"],
+            correct: 3,
+            explanation: "Total minutes = 15 × 6 = 90 minutes."
+        },
+        {
+            question: "Varun had 5,000 food parcels. He gave away 2,775 parcels to the homeless. How many parcels are left with him?",
+            options: ["2,125", "2,225", "2,325", "2,215"],
+            correct: 1,
+            explanation: "Parcels left = 5,000 - 2,775 = 2,225."
+        },
+        {
+            question: "Mahi fed 270 hens on Tuesday, 270 hens on Wednesday, and 470 hens on Thursday. Find the total number of hens fed by Mahi on these three days.",
+            options: ["1,020", "1,030", "1,010", "1,040"],
+            correct: 2,
+            explanation: "Total hens = 270 + 270 + 470 = 1,010."
+        },
+        {
+            question: "Class 3A collected ₹3,455 and Class 3B collected ₹3,599. How much more money was collected by Class 3B compared to Class 3A?",
+            options: ["₹134", "₹144", "₹154", "₹140"],
+            correct: 1,
+            explanation: "Difference = ₹3,599 - ₹3,455 = ₹144."
+        },
+        {
+            question: "On Saturday, a train to Chennai carried 3,493 passengers. On Sunday, it carried 2,297 passengers. How many passengers were carried by the train on these two days?",
+            options: ["5,719", "5,790", "5,817", "5,975"],
+            correct: 1,
+            explanation: "Total passengers = 3,493 + 2,297 = 5,790."
+        },
+        {
+            question: "Class 3A collected ₹3,455 and Class 3B collected ₹3,599. What was the total amount collected by both classes?",
+            options: ["₹7,054", "₹6,954", "₹7,154", "₹7,044"],
+            correct: 0,
+            explanation: "Total amount = ₹3,455 + ₹3,599 = ₹7,054."
+        },
+        {
+            question: "A birthday party hall was decorated with 483 blue balloons, 377 yellow balloons, and 329 balloons of other colours. Find the total number of balloons in that hall.",
+            options: ["2,189", "1,198", "1,187", "1,189"],
+            correct: 3,
+            explanation: "Total balloons = 483 + 377 + 329 = 1,189."
+        },
+        {
+            question: "A farmer borrowed ₹9,500 from a bank and repaid ₹6,390. What is the balance amount he has to pay?",
+            options: ["₹4,110", "₹3,510", "₹3,610", "₹3,110"],
+            correct: 3,
+            explanation: "Balance = ₹9,500 - ₹6,390 = ₹3,110."
+        },
+        {
+            question: "In a shop, there are 1,177 pairs of shoes for men, 1,182 pairs of shoes for women, and 720 pairs of shoes for kids. Find the total pairs of shoes available in that shop.",
+            options: ["3,079", "3,790", "3,097", "3,970"],
+            correct: 0,
+            explanation: "Total pairs of shoes = 1,177 + 1,182 + 720 = 3,079."
+        },
+        {
+            question: "Abdul was given ₹5,000 by his parents. He spent ₹500 on food and ₹750 on transport. How much money is left with him?",
+            options: ["₹3,750", "₹3,170", "₹3,180", "₹4,170"],
+            correct: 0,
+            explanation: "Money left = ₹5,000 - (₹500 + ₹750) = ₹5,000 - ₹1,250 = ₹3,750."
+        },
+        {
+            question: "A farm had 5,000 coconuts. The owner sold 4,232 and gave 47 to tree climbers. How many coconuts are left with the owner?",
+            options: ["768", "674", "721", "821"],
+            correct: 2,
+            explanation: "Coconuts left = 5,000 - 4,232 - 47 = 721."
+        }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let userAnswers = new Array(allQuestions.length).fill(null);
+
+    function loadQuestion() {
+        const q = allQuestions[currentIndex];
+        document.getElementById('questionTag').innerText = `Question ${currentIndex + 1}`;
+        document.getElementById('questionText').innerText = q.question;
+        
+        document.getElementById('questionCount').innerText = `Question ${currentIndex + 1} of ${allQuestions.length}`;
+        document.getElementById('scoreTracker').innerText = `Score: ${score}`;
+        
+        const progressPercent = ((currentIndex + 1) / allQuestions.length) * 100;
+        document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+        const optionsGrid = document.getElementById('optionsGrid');
+        optionsGrid.innerHTML = '';
+
+        const explanationDiv = document.getElementById('explanation');
+        explanationDiv.style.display = 'none';
+        explanationDiv.innerText = '';
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span>${opt}</span>`;
+            
+            if (userAnswers[currentIndex] !== null) {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('selected-correct');
+                }
+                if (userAnswers[currentIndex] === idx && idx !== q.correct) {
+                    btn.classList.add('selected-incorrect');
+                }
+            } else {
+                btn.onclick = () => selectOption(idx);
+            }
+
+            optionsGrid.appendChild(btn);
+        });
+
+        if (userAnswers[currentIndex] !== null) {
+            explanationDiv.style.display = 'block';
+            explanationDiv.innerText = q.explanation;
+        }
+
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').disabled = userAnswers[currentIndex] === null;
+        
+        if (currentIndex === allQuestions.length - 1 && userAnswers[currentIndex] !== null) {
+            document.getElementById('nextBtn').innerText = 'Finish Quiz';
+        } else {
+            document.getElementById('nextBtn').innerText = 'Next Question';
+        }
+    }
+
+    function selectOption(optionIndex) {
+        userAnswers[currentIndex] = optionIndex;
+        const q = allQuestions[currentIndex];
+
+        if (optionIndex === q.correct) {
+            score++;
+        }
+
+        loadQuestion();
+    }
+
+    function nextQuestion() {
+        if (currentIndex < allQuestions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        } else {
+            showScoreModal();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    }
+
+    function showScoreModal() {
+        document.getElementById('quizContent').style.display = 'none';
+        const scoreModal = document.getElementById('scoreModal');
+        scoreModal.style.display = 'block';
+
+        const percentage = Math.round((score / allQuestions.length) * 100);
+        document.getElementById('finalScore').innerText = `${percentage}%`;
+        document.getElementById('scoreDetails').innerText = `You answered ${score} out of ${allQuestions.length} questions correctly.`;
+    }
+
+    function restartQuiz() {
+        currentIndex = 0;
+        score = 0;
+        userAnswers = new Array(allQuestions.length).fill(null);
+        document.getElementById('quizContent').style.display = 'block';
+        document.getElementById('scoreModal').style.display = 'none';
+        loadQuestion();
+    }
+
+    // Initialize Quiz
+    loadQuestion();
+</script>
+
+</body>
+</html>
