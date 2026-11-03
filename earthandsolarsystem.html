@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Earth and the Solar System Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #cfe8f7; text-align: center; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .clue-text { font-size: 18px; color: #555; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .target-word { font-size: 20px; font-weight: bold; color: #2c3e50; background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; line-height: 1.5; }
+    button { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 10px; border: none; background: #fff4b3; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #ffeaa7; }
+    #score { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    #result { font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>🌌 Chapter 11: The Earth and the Solar System</h2>
+<div id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "What is the very huge area in which the sun and other heavenly bodies are found called?", options: ["Space", "Galaxy", "Orbit"], answer: 0},
+  {q: "The sun is made up of which of the following?", options: ["Very hot, burning gases", "Rocks and soil", "Water and ice"], answer: 0},
+  {q: "How many earths can fit inside the sun?", options: ["One million (1,000,000)", "One thousand (1,000)", "Ten thousand (10,000)"], answer: 0},
+  {q: "What does the sun give us because it is a huge ball of fire?", options: ["Heat and light", "Wind and rain", "Only sound"], answer: 0},
+  {q: "Why should we never look at the sun directly?", options: ["It can damage our eyes", "It is too small to see", "It is made of water"], answer: 0},
+  {q: "How many planets are there in the sun's family (the solar system)?", options: ["Eight", "Nine", "Seven"], answer: 0},
+  {q: "What is a planet?", options: ["A round heavenly body that moves around the sun", "A burning ball of fire that stays still", "A group of millions of stars"], answer: 0},
+  {q: "What is the fixed path on which each planet moves around the sun called?", options: ["Orbit", "Space", "Galaxy"], answer: 0},
+  {q: "The sun and its group of eight planets are together called what?", options: ["The solar system", "The Milky Way", "The universe"], answer: 0},
+  {q: "Which position from the sun does the earth occupy?", options: ["Third planet", "Second planet", "Fourth planet"], answer: 0},
+  {q: "What are heavenly bodies that move around planets called?", options: ["Satellites", "Stars", "Comets"], answer: 0},
+  {q: "What is the earth's natural satellite?", options: ["The moon", "Mars", "Venus"], answer: 0},
+  {q: "Why do planets and satellites shine at night?", options: ["Because the light of the sun shines on them", "Because they have their own light", "Because they are made of fire"], answer: 0},
+  {q: "Which heavenly body was called a planet for over 70 years, but is now called a dwarf (small) planet?", options: ["Pluto", "Neptune", "Saturn"], answer: 0},
+  {q: "Why was Pluto reclassified as a dwarf planet?", options: ["It is too small to be a planet", "It is too close to the sun", "It has no orbit"], answer: 0},
+  {q: "Which planet is closest to the sun and takes 88 days to complete one orbit?", options: ["Mercury", "Venus", "Mars"], answer: 0},
+  {q: "Which planet in the solar system does not have any satellites?", options: ["Mercury and Venus", "Earth and Mars", "Jupiter and Saturn"], answer: 0},
+  {q: "Which planet is our closest neighbour, shines very brightly in the sky, and is the hottest planet?", options: ["Venus", "Mercury", "Mars"], answer: 0},
+  {q: "Which planet is sometimes called the 'red planet' because it is covered in red dust?", options: ["Mars", "Jupiter", "Saturn"], answer: 0},
+  {q: "How many small satellites does Mars have?", options: ["Two", "Zero", "Seven"], answer: 0},
+  {q: "Which spacecraft have visited Mars to help us find out more about it?", options: ["Spacecraft from Earth", "Chandrayaan", "Hubble"], answer: 0},
+  {q: "Which is the third planet from the sun that has air, water, and life?", options: ["Earth", "Venus", "Mars"], answer: 0},
+  {q: "How long does it take Earth to complete one orbit around the sun (one year)?", options: ["A little more than 365 days", "Exactly 300 days", "88 days"], answer: 0},
+  {q: "Which is the biggest planet in the solar system?", options: ["Jupiter", "Saturn", "Neptune"], answer: 0},
+  {q: "How many earths would take to fill up Jupiter?", options: ["1,200 earths", "1,000,000 earths", "50 earths"], answer: 0},
+  {q: "Which planet is the second-largest and has seven shining ice rings that surround it?", options: ["Saturn", "Uranus", "Jupiter"], answer: 0},
+  {q: "Which planet has rings that are dark, has many satellites, and looks blue?", options: ["Uranus", "Neptune", "Saturn"], answer: 0},
+  {q: "Which planet is dark and very cold, and looks blue like Uranus?", options: ["Neptune", "Mercury", "Mars"], answer: 0},
+  {q: "What sentence helps remember the right order of the planets (Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune)?", options: ["My Very Excited Monkey Just Saw Uneaten Nuts", "Many Vibrant Earths Move Joyfully Past Us Now", "Moon Venus Earth Mars Jupiter Saturn Uranus"], answer: 0},
+  {q: "What are huge balls of fire like the sun that shine brightly in the night sky called?", options: ["Stars", "Planets", "Satellites"], answer: 0},
+  {q: "Why does our sun look bigger and brighter than other stars?", options: ["It is nearer the earth than the other stars", "It is the only star in the universe", "It is made of water"], answer: 0},
+  {q: "Why can we not see stars during the day?", options: ["Because of the bright light of the sun", "Because they move away to another galaxy", "Because they turn off their light"], answer: 0},
+  {q: "What is a group of many, many thousands of stars called?", options: ["A galaxy", "A solar system", "An orbit"], answer: 0},
+  {q: "What is the name of the galaxy in which our solar system is located?", options: ["Milky Way galaxy", "Red galaxy", "Solar galaxy"], answer: 0},
+  {q: "Where in the Milky Way galaxy is our solar system located?", options: ["In one of the outer rings", "In the bright center", "Outside the galaxy"], answer: 0},
+  {q: "What did India's spacecraft Chandrayaan 1 find water on?", options: ["The moon", "Mars", "The sun"], answer: 0},
+  {q: "Which planet did Mangalyaan send back photographs of (after traveling 10 months)?", options: ["Mars", "Venus", "Saturn"], answer: 0},
+  {q: "Which of the following are all called heavenly bodies?", options: ["The moon, the stars, and the sun", "Only planets and satellites", "Rockets and spacecraft"], answer: 0},
+  {q: "Do planets and satellites have any light of their own?", options: ["No, they reflect light from the sun", "Yes, they burn like stars", "Yes, they produce electricity"], answer: 0},
+  {q: "What is a vehicle that travels in space called?", options: ["Spacecraft", "Satellite", "Orbit"], answer: 0},
+  {q: "Which of the following is NOT a planet in our solar system?", options: ["Moon", "Mars", "Saturn"], answer: 0},
+  {q: "Which planet is known for having prominent shining ice rings?", options: ["Saturn", "Mercury", "Earth"], answer: 0},
+  {q: "What path does the earth take when moving around the sun?", options: ["Orbit", "Galaxy", "Space"], answer: 0},
+  {q: "Which planet is known as the planet with air and water that supports life?", options: ["Earth", "Neptune", "Uranus"], answer: 0},
+  {q: "What keeps the planets moving along their fixed paths around the sun?", options: ["Their orbit", "Magic", "Wind"], answer: 0},
+  {q: "A galaxy is made up of how many stars?", options: ["Thousands of stars", "Only eight stars", "Just one star"], answer: 0},
+  {q: "What is the primary source of light and heat for the solar system?", options: ["The Sun", "The Moon", "The Stars"], answer: 0},
+  {q: "Which planet is positioned between Venus and Mars?", options: ["Earth", "Saturn", "Mercury"], answer: 0},
+  {q: "Which statement about stars and planets is correct?", options: ["Stars have their own light, planets reflect sun's light", "Planets are bigger than stars", "Stars move around planets"], answer: 0},
+  {q: "What is the main reason why life exists on Earth and not on other planets?", options: ["Presence of air, water, and right amount of heat", "It is the closest to the sun", "It has no moon"], answer: 0}
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Quiz Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { html += `<button onclick="check(${index})">${opt}</button>`; });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { score++; correctSound.play().catch(e => {}); }
+  else { wrongSound.play().catch(e => {}); }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { current++; loadQuestion(); }, 1500);
+}
+loadQuestion();
+</script>
+</body>
+</html>
