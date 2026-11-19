@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 13: Knowing the Earth Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #cfe8f7; text-align: center; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 15px; max-width: 550px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .clue-text { font-size: 18px; color: #555; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .target-word { font-size: 20px; font-weight: bold; color: #2c3e50; background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; line-height: 1.5; }
+    button { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 10px; border: none; background: #fff4b3; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #ffeaa7; }
+    #score { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    #result { font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>🌍 Chapter 13: Knowing the Earth</h2>
+<div id="score">Score: 0</div>
+<div class="box" id="quiz"></div>
+<div id="result"></div>
+
+<script>
+let questions = [
+  {q: "Why can most of us not see our home when we look out of our classroom?", options: ["Because it is far away", "Because it is underground", "Because it is too tall"], answer: 0},
+  {q: "Why do we use globes and maps to learn about the earth?", options: ["Because the earth is very huge and we can only see nearby places", "Because the earth is smaller than a classroom", "Because there are no real places on the earth"], answer: 0},
+  {q: "What is a globe?", options: ["A model of the earth", "A book of stories", "A type of compass"], answer: 0},
+  {q: "What does a globe show us about the earth?", options: ["What the earth actually looks like and where land and water are", "How much rain falls in a city", "What roads a town has"], answer: 0},
+  {q: "How does spinning a globe help us?", options: ["It helps us understand how the earth also spins", "It shows the exact road names of a city", "It tells the time of sunrise"], answer: 0},
+  {q: "In both the satellite picture of the earth and the globe shown, which country is pointed out?", options: ["India", "Australia", "Brazil"], answer: 0},
+  {q: "Why do we have maps in addition to globes?", options: ["Globes are not easy to carry from place to place", "Maps are round balls", "Globes show roads better than maps"], answer: 0},
+  {q: "What are maps?", options: ["Special flat drawings of different parts of the earth", "Photographs taken from a camera", "Models made of wood and metal"], answer: 0},
+  {q: "Which of the following is a feature of maps?", options: ["They are flat and can be carried around easily", "They are round and cannot be folded", "They only show one small room"], answer: 0},
+  {q: "What special information can maps give us?", options: ["How much rain a place gets or what roads it has", "What our home looks like inside", "How many people are in a classroom"], answer: 0},
+  {q: "What interesting facts about a place can we learn from a map?", options: ["Whether it has mountains, rivers, or the sea nearby", "What clothes people are wearing", "How loud the wind is"], answer: 0},
+  {q: "What is a book containing many maps of different parts of the earth called?", options: ["An atlas", "A dictionary", "A notebook"], answer: 0},
+  {q: "After which figure from Greek myth is an atlas named?", options: ["Atlas, a Greek god who carried the earth on his shoulders", "A sailor who sailed around the world", "A king who drew the first map"], answer: 0},
+  {q: "In the photograph of an area shown, what features are labelled?", options: ["Two villages, fields, a road, and trees", "A desert, a glacier, and a volcano", "A train station, a harbor, and a bridge"], answer: 0},
+  {q: "In the partner activity without a grid, why was it harder to tell the exact spot of the star using only words?", options: ["Because the paper had no named boxes or grid", "Because the star was invisible", "Because the paper was round"], answer: 0},
+  {q: "In the grid activity (Drawing 3 and Drawing 4), what do criss-cross lines form?", options: ["A grid where each box has a name", "A compass needle", "A natural river"], answer: 0},
+  {q: "In Drawing 4 of the grid activity, which box contains the star?", options: ["C3", "A1", "D4"], answer: 0},
+  {q: "Why are you able to tell your partner the exact place to draw a star on a grid?", options: ["Because each square has a name", "Because the paper is made of glass", "Because there is only one box"], answer: 0},
+  {q: "What are the lines drawn on maps and globes to form grids?", options: ["Imaginary (not real) lines", "Real metal wires on the earth", "Painted roads on the ground"], answer: 0},
+  {q: "Does the earth actually have grid lines on its surface?", options: ["No, they are imaginary lines that help find places", "Yes, thick black lines cover the earth", "Yes, lines are dug into every ocean"], answer: 0},
+  {q: "What is the imaginary line drawn around the centre of the earth called?", options: ["The equator", "The compass", "The atlas"], answer: 0},
+  {q: "Where is the equator drawn on globes and maps?", options: ["Around the centre of the earth", "At the bottom corner of a page", "Inside a compass"], answer: 0},
+  {q: "Where in an atlas is the index found?", options: ["At the end of the atlas", "On the front cover", "In the middle of a river"], answer: 0},
+  {q: "In what order are the names of places arranged in an atlas index?", options: ["In alphabetical order", "From largest to smallest population", "From north to south only"], answer: 0},
+  {q: "According to the index shown, in which state is Ahmadnagar located?", options: ["Maharashtra", "Telangana", "Andhra Pradesh"], answer: 0},
+  {q: "According to the index shown, what is the grid location for Hyderabad?", options: ["B2", "A2", "C2"], answer: 0},
+  {q: "According to the index shown, what is the grid location for Mumbai?", options: ["A2", "B1", "C2"], answer: 0},
+  {q: "According to the index shown, what is the grid location for Nagpur?", options: ["B1", "A2", "B2"], answer: 0},
+  {q: "According to the index shown, in which state is Warangal located?", options: ["Telangana", "Maharashtra", "Andhra Pradesh"], answer: 0},
+  {q: "According to the index shown, what is the grid location for Vijayawada?", options: ["C2", "B2", "A2"], answer: 0},
+  {q: "In the index shown, which place is listed in Andhra Pradesh at grid B2?", options: ["Hyderabad", "Vijayawada", "Mumbai"], answer: 0},
+  {q: "What is the first step given to find Mumbai in the atlas map?", options: ["Know the correct spelling: MUMBAI", "Spin the globe three times", "Look at the bottom of the page"], answer: 0},
+  {q: "According to the steps on finding Mumbai, on which page of the atlas is Mumbai?", options: ["Page 15", "Page 109", "Page 112"], answer: 0},
+  {q: "According to the steps on finding Mumbai, in which square is Mumbai located?", options: ["A2", "C2", "B1"], answer: 0},
+  {q: "Why do we need to know left and right?", options: ["To be able to tell where the directions are", "To draw an atlas cover", "To count the oceans"], answer: 0},
+  {q: "What are the four main directions?", options: ["North, south, east, and west", "Up, down, left, and right", "In, out, front, and back"], answer: 0},
+  {q: "In which direction does the sun rise early in the morning?", options: ["East", "West", "South"], answer: 0},
+  {q: "In which direction does the sun set every day?", options: ["West", "East", "North"], answer: 0},
+  {q: "If you stand in the morning with arms stretched sideways and your right hand points toward the rising sun (east), which way does your left hand point?", options: ["West", "North", "South"], answer: 0},
+  {q: "If you stand in the morning with your right hand pointing east, what direction is in front of you?", options: ["North", "South", "West"], answer: 0},
+  {q: "If you stand in the morning with your right hand pointing east, what direction is behind you?", options: ["South", "North", "East"], answer: 0},
+  {q: "What does the direction sign with 'N' on a map tell you about the top of the map?", options: ["The top of the map shows north", "The top of the map shows south", "The top of the map shows east"], answer: 0},
+  {q: "On a standard map with north at the top, which direction is on the right side?", options: ["East", "West", "North"], answer: 0},
+  {q: "On a standard map with north at the top, which direction is on the left side?", options: ["West", "East", "South"], answer: 0},
+  {q: "From which ancient German word does the word 'east' come, meaning 'towards the sunrise'?", options: ["Aust", "Grid", "Atlas"], answer: 0},
+  {q: "What is a compass?", options: ["A special instrument that helps find the direction of a place", "A book of world maps", "A line around the centre of the earth"], answer: 0},
+  {q: "Which way does the needle of a compass always point?", options: ["North", "South", "East"], answer: 0},
+  {q: "Which part of the compass needle shows north?", options: ["The red tip of the needle", "The round ring at the top", "The letter 'S'"], answer: 0},
+  {q: "How can you use a compass properly?", options: ["Turn the compass to match the red tip with 'N'", "Spin it like a top in the air", "Dip it in water to see the map"], answer: 0},
+  {q: "What are the four directions—north, south, east, and west—also called?", options: ["The points of the compass", "The lines of the equator", "The pages of an atlas"], answer: 0}
+];
+
+let current = 0, score = 0, currentShuffledOptions = [], correctTextForCurrentQuestion = "";
+let clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let correctSound = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let wrongSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    document.getElementById("quiz").innerHTML = "";
+    document.getElementById("result").innerHTML = "🎉 Quiz Completed! Final Score: " + score + " / " + questions.length;
+    return;
+  }
+  let q = questions[current];
+  correctTextForCurrentQuestion = q.options[q.answer];
+  currentShuffledOptions = shuffle([...q.options]);
+
+  let html = `<div class="clue-text">Question ${current + 1} of ${questions.length}:</div><div class="target-word">${q.q}</div>`;
+  currentShuffledOptions.forEach((opt, index) => { html += `<button onclick="check(${index})">${opt}</button>`; });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function check(selectedIndex) {
+  clickSound.play().catch(e => {});
+  let selectedText = currentShuffledOptions[selectedIndex];
+  let buttons = document.querySelectorAll("#quiz button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (currentShuffledOptions[idx] === correctTextForCurrentQuestion) btn.style.background = "#a8e6a3";
+    if (idx === selectedIndex && selectedText !== correctTextForCurrentQuestion) btn.style.background = "#ffb3b3";
+  });
+
+  if (selectedText === correctTextForCurrentQuestion) { score++; correctSound.play().catch(e => {}); }
+  else { wrongSound.play().catch(e => {}); }
+
+  document.getElementById("score").innerText = "Score: " + score + " / " + questions.length;
+  setTimeout(() => { current++; loadQuestion(); }, 1500);
+}
+loadQuestion();
+</script>
+</body>
+</html>
